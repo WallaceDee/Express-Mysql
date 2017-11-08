@@ -10,7 +10,7 @@ module.exports = {
     connect: function() {
         return mysql.createPool(this.mysql);
     },
-    executeSql: function(sql, param, callback, pool) {
+    executeSql: function(sql, param, pool, callback) {
         pool.getConnection(function(err, connection) {
             connection.query(sql, param, function(err, result) {
                 callback(err, result);

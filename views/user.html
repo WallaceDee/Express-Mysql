@@ -13,8 +13,7 @@
 </head>
 
 <body>
-    <table id="dg" title="用户管理" style="width:100%;height:650px" data-options="rownumbers:true,remoteSort:false,multiSort:true,singleSelect:true,pagination:true,url:'users/list',method:'get',toolbar:'#tb' 
-">
+    <table id="dg" title="用户管理" style="width:100%;height:600px" data-options="rownumbers:true,remoteSort:false,multiSort:true,singleSelect:true,pagination:true,url:'/users/list',method:'get',toolbar:'#tb'">
         <thead>
             <tr>
                 <th data-options="field:'ck',checkbox:true"></th>
@@ -29,23 +28,35 @@
         </thead>
     </table>
     <div id="tb">
-        <p><span>修改：</span><a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save',plain:true" onclick="accept()">保存</a>
-            <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-undo',plain:true" onclick="reject()">撤销</a>
-            <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true" onclick="getChanges()">GetChanges</a>
+        <p><a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save',plain:true" onclick="confirmChanges()">保存修改</a>
+            <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-undo',plain:true" onclick="rejectChanges()">撤销修改</a>
+            <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true" onclick="deleteUser()">删除</a>
         </p>
-        <p><span>删除：</span><a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true" onclick="deleteUser()">删除</a></p>
-        <p><span>搜索：</span>
-            <div>
-                <input name="userName" class="easyui-textbox" data-options="label:'用户名:'">
-            </div>
-            <div>
-                <input name="userPhone" class="easyui-textbox" data-options="label:'电话号码:'">
-            </div>
+        <p>
+            <input name="userName" placeholder="用户名">
+            <input name="userPhone" placeholder="电话">
             <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true" onclick="doSearch()">搜索</a>
+    </div>
+    <div id="w" class="easyui-window" title="确认修改内容" data-options="modal:true,closed:true,iconCls:'icon-save',collapsible:false" style="width:400px;height:300px;">
+        <table id="preview-dg" style="width:100%;height: 200px;">
+            <thead>
+                <tr>
+                    <th data-options="field:'userName',align:'center',width:100">用户名</th>
+                    <th data-options="field:'userAvatar',align:'center',width:100" formatter="imageFormatter">头像</th>
+                    <th data-options="field:'userPhone',align:'center',width:90">电话</th>
+                    <th data-options="field:'userGender',align:'center',width:50" formatter="genderFormatter">性别</th>
+                </tr>
+            </thead>
+        </table>
+        <p> <a onclick="acceptChanges()" class="easyui-linkbutton" data-options="iconCls:'icon-ok'">确认</a><a onclick="closeWindow()" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'">取消</a></p>
     </div>
     <script type="text/javascript">
     var $dg = $('#dg');
+    var $window = $("#w");
 
+    function closeWindow() {
+        $window.window('close');
+    }
 
     function genderFormatter(val, row, index) {
         var gender = "保密";
@@ -68,28 +79,47 @@
     function deleteUser() {
         $.messager.confirm('删除', '确定要删除？', function(r) {
             if (r) {
-                var rows = $dg.datagrid('getSelected');
-                $.ajax({
-                    type: "post",
-                    url: "/users/deleteUser",
-                    data: { userId: rows.userId },
-                    dataType: "json",
-                    success: function(data) {
-                        $dg.datagrid('reload');
-                    }
-                });
+                var rows = $dg.datagrid('getSelections');
+                var delete_times = rows.length;
+                for (i in rows) {
+                    $.ajax({
+                        type: "post",
+                        url: "/users/deleteUser",
+                        data: { userId: rows[i].userId },
+                        dataType: "json",
+                        success: function(data) {
+                            delete_times--;
+                            if (delete_times === 0) {
+                                $dg.datagrid('reload');
+                            }
+                        }
+                    });
+                }
             }
         });
     }
 
-    var editIndex = undefined;
+
+    function confirmChanges() {
+
+        $dg.datagrid('endEdit', getCurrRowIndex());
+        var rows = $dg.datagrid('getChanges');
+        if (rows.length > 0) {
+            var data = { rows: rows, total: rows.length };
+            $("#preview-dg").datagrid();
+            $("#preview-dg").datagrid("loadData", data);
+            $window.window('open');
+        } else {
+            $.messager.alert('提示', '您还没做任何修改！', 'info');
+        }
+    }
 
     function getCurrRowIndex() {
         var tr = $("[name='ck']:checked").closest('tr.datagrid-row');
         return parseInt(tr.attr('datagrid-row-index'));
     }
 
-    function accept() {
+    function acceptChanges() {
         $dg.datagrid('endEdit', getCurrRowIndex());
         var rows = $dg.datagrid('getChanges');
         console.log(rows);
@@ -105,21 +135,20 @@
                     update_times--;
                     if (update_times === 0) {
                         $dg.datagrid('reload');
+                        $window.window('close');
                     }
                 }
             });
         }
     }
 
-    function reject() {
+    var editIndex = undefined;
+
+    function rejectChanges() {
         $dg.datagrid('rejectChanges');
         editIndex = undefined;
     }
 
-    function getChanges() {
-        var rows = $dg.datagrid('getChanges');
-        alert(rows.length + ' rows are changed!');
-    }
 
 
     function doSearch() {
@@ -128,9 +157,14 @@
             userPhone: $('[name="userPhone"]').val()
         });
     }
+
     $(function() {
-        var datagrid = $dg.datagrid();
-        setTimeout(function() { $dg.datagrid('fixRowHeight'); }, 100);
+        var datagrid = $dg.datagrid({
+            onLoadSuccess: function() {
+                $('img').eq(1).load(function() { { $dg.datagrid('fixRowHeight'); }
+                });
+            }
+        });
         datagrid.datagrid('enableCellEditing');
     });
     </script>

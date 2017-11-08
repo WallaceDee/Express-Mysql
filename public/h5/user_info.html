@@ -1,10 +1,255 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh">
+
 <head>
-	<meta charset="UTF-8">
-	<title>Document</title>
+    <title>用户信息</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="/h5/lib/weui.min.css">
+    <link rel="stylesheet" href="/h5/css/jquery-weui.css">
+    <link rel="stylesheet" href="/h5/css/cropper.min.css">
+    <link rel="stylesheet" href="/h5/css/style.css">
 </head>
+
 <body>
-	
+    <div class="page__bd page-user-info">
+    </div>
+    <div id="cutter" class='weui-popup__container'>
+        <div class="weui-popup__overlay"></div>
+        <div class="weui-popup__modal">
+            <div class="img-container">
+                <img id="crop-image" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAMAAAAoyzS7AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyFpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNS1jMDE0IDc5LjE1MTQ4MSwgMjAxMy8wMy8xMy0xMjowOToxNSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIChXaW5kb3dzKSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDpCMkU1NDMxNUJEMzExMUU3Qjg4QkY3ODY2OERFNDIzMSIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDpCMkU1NDMxNkJEMzExMUU3Qjg4QkY3ODY2OERFNDIzMSI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkIyRTU0MzEzQkQzMTExRTdCODhCRjc4NjY4REU0MjMxIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOkIyRTU0MzE0QkQzMTExRTdCODhCRjc4NjY4REU0MjMxIi8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+7MDd+QAAAAZQTFRFAAAAAAAApWe5zwAAAAF0Uk5TAEDm2GYAAAAMSURBVHjaYmAACDAAAAIAAU9tWeEAAAAASUVORK5CYII=" alt="Picture">
+            </div>
+            <div class="page__bd_spacing button-wrapper">
+                <a href="javascript:;" class="weui-btn weui-btn_primary">修改</a>
+                <a href="javascript:;" class="weui-btn weui-btn_warn close-popup">关闭</a></div>
+        </div>
+    </div>
+    <script id="page-user-info" type="text/html">
+        <div class="weui-cells__title">用户信息</div>
+        <div class="weui-cells">
+            <a class="weui-cell weui-cell_access name-cell">
+                <div class="weui-cell__bd">
+                    <p>用户名</p>
+                </div>
+                <div class="weui-cell__ft">{{list.userNickName}}</div>
+            </a>
+            <a class="weui-cell weui-cell_access avatar-cell">
+                <div class="weui-cell__bd">
+                    <p>头像</p>
+                </div>
+                <div class="weui-cell__ft">
+                    <span style="background-image: url({{if list.userAvatar!==null}}../{{list.userAvatar}}{{else}}images/default.png{{/if}});"></span>
+                </div>
+                <input type="file" name="uploadAvatar">
+            </a>
+            <a class="weui-cell weui-cell_access phone-cell">
+                <div class="weui-cell__bd">
+                    <p>手机</p>
+                </div>
+                <div class="weui-cell__ft">{{if list.userPhone!==null}}{{list.userPhone}}{{else}}去绑定{{/if}}</div>
+            </a>
+            <a class="weui-cell weui-cell_access">
+                <div class="weui-cell__bd">
+                    <p>性别</p>
+                </div>
+                <div class="weui-cell__ft">
+                    <input class="weui-input gender-input" type="text" readonly="" value="{{list.userGender|genderFormat}}">
+                </div>
+            </a>
+            <a class="weui-cell weui-cell_access" href="javascript:;">
+                <div class="weui-cell__bd">
+                    <p> 生日</p>
+                </div>
+                <div class="weui-cell__ft">
+                    <input class="weui-input birthday-input" type="text" readonly="" value="{{if list.userBirthday!==null}}{{list.userBirthday}}{{else}}点击设置{{/if}}">
+                </div>
+            </a>
+        </div>
+    </script>
+    <script src="/h5/lib/jquery-2.1.4.js"></script>
+    <script src="/h5/lib/fastclick.js"></script>
+    <script>
+    $(function() {
+        FastClick.attach(document.body);
+    });
+    </script>
+    <script src="/h5/js/jquery-weui.js"></script>
+    <script src="/h5/js/template-web.js"></script>
+    <script src="/h5/js/cropper.min.js"></script>
+    <script src="/h5/js/default.js"></script>
+    <script>
+    $(document).ready(function($) {
+        userInfo = getCache("userInfo");
+        var temp_html = template('page-user-info', { list: userInfo });
+        $(".page__bd").html(temp_html);
+        console.log("-----读取");
+
+        $(".gender-input").picker({
+            title: "请选择性别",
+            toolbarTemplate: '<div class="toolbar">\
+          <div class="toolbar-inner">\
+          <h1 class="title">{{title}}</h1>\
+          </div>\
+          </div>',
+            cols: [{
+                textAlign: 'center',
+                values: ["保密", "男", "女"],
+            }],
+            onChange: function(picker) {
+                var value = 0;
+                for (var i = 0; i < gender_list.length; i++) {
+                    if (picker.value[0] === gender_list[i].name) {
+                        value = gender_list[i].value;
+                    }
+                }
+                console.log(value);
+                $.ajax({
+                    type: "post",
+                    url: "/users/modify",
+                    data: { userGender: value, userName: userInfo.userName, type: "userGender", token: token },
+                    success: function(data) {
+                        if (data.code === 200) {
+                            // userInfo.userGender = value;
+                            // setCache("userInfo", userInfo);
+                        }
+                    }
+                });
+            }
+        });
+
+        var today = new Date().getTime();
+        var ex_birthday = $(".birthday-input").val();
+        ex_birthday === "点击设置" ? ex_birthday = [today] : ex_birthday=[ex_birthday];
+        $(".birthday-input").calendar({
+            value: ex_birthday,
+            maxDate: today,
+            dateFormat: 'yyyy-mm-dd',
+            onChange: function(calendar) {
+                console.log(calendar.value);
+                var value=new Date(calendar.value[0]).format("yyyy-MM-dd");
+                $.ajax({
+                    type: "post",
+                    url: "/users/modify",
+                    data: { userBirthday: value, userName: userInfo.userName, type: "userBirthday", token: token },
+                    success: function(data) {
+                        if (data.code === 200) {
+                            // userInfo.userGender = value;
+                            // setCache("userInfo", userInfo);
+                        }
+                    }
+                });
+            }
+        });
+
+        cropper = null;
+        var image = document.getElementById('crop-image');
+        cropper = new Cropper(image, {
+            aspectRatio: 1,
+            viewMode: 1
+        });
+
+        $(document).on("click", "#cutter .weui-btn_primary", function() {
+            var src_data = cropper.getCroppedCanvas({
+                with: 200,
+                height: 200
+            }).toDataURL('image/jpeg');
+            $.ajax({
+                type: "post",
+                url: "/users/modify",
+                data: { base64: src_data, userName: userInfo.userName, type: "userAvatar", token: token },
+                success: function(data) {
+                    if (data.code === 200) {
+                        $(".page-user-info .avatar-cell .weui-cell__ft span").css("background-image", "url(" + src_data + ")");
+                        $.closePopup();
+                    }
+                }
+            });
+        });
+
+
+
+        $(document).on("click", ".page-user-info .name-cell", function() {
+            var ex_value = $(this).find(".weui-cell__ft").text();
+
+            $.prompt({
+                title: '修改昵称',
+                input: ex_value,
+                empty: false, // 是否允许为空
+                onOK: function(value) {
+                    console.log(value);
+                    $.ajax({
+                        type: "post",
+                        url: "/users/modify",
+                        data: { userNickName: value, userName: userInfo.userName, type: "userNickName", token: token },
+                        success: function(data) {
+                            if (data.code === 200) {
+                                $(".page-user-info .name-cell .weui-cell__ft").html(value);
+                            }
+                        }
+                    });
+                },
+                onCancel: function() {
+                    //点击取消
+                    //todo
+                }
+            });
+        });
+
+
+        $(document).on("click", ".page-user-info .phone-cell", function() {
+            var ex_value = $(this).find(".weui-cell__ft").text();
+            ex_value === "去绑定" ? ex_value = "" : void 0;
+            $.prompt({
+                title: '修改电话',
+                input: ex_value,
+                empty: false, // 是否允许为空
+                onOK: function(value) {
+                    console.log(value);
+                    $.ajax({
+                        type: "post",
+                        url: "/users/modify",
+                        data: { userPhone: value, userName: userInfo.userName, type: "userPhone", token: token },
+                        success: function(data) {
+                            if (data.code === 200) {
+                                $(".page-user-info .phone-cell .weui-cell__ft").html(value);
+                            }
+                        }
+                    });
+                },
+                onCancel: function() {
+                    //点击取消
+                    //todo
+                }
+            });
+        });
+
+
+
+        $(document).on("change", "[name='uploadAvatar']", function() {
+            // 检查是否为图像类型
+            var simpleFile = this.files[0];
+            if (!/image\/\w+/.test(simpleFile.type)) {
+                alert("请确保文件类型为图像类型");
+                return false;
+            }
+            var reader = new FileReader();
+            // 将文件以二进制文件读入页面中
+            $.showLoading();
+            reader.onload = function(e) {
+                imgFile = e.target.result;
+                $("#cutter").popup();
+                cropper.reset().replace(imgFile);
+                $.hideLoading();
+                //重置input值，避免重复上传同一的图片不触发onchange事件
+                $("[name='uploadAvatar']").val("");
+
+            }
+            reader.readAsDataURL(simpleFile);
+        });
+    });
+    </script>
 </body>
+
 </html>
