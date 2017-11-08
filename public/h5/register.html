@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <title>注册</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="/h5/lib/weui.min.css">
+    <link rel="stylesheet" href="/h5/css/jquery-weui.css">
+</head>
+
+<body>
+    <div class="page__bd">
+        <div class="weui-cells__title">请填写信息</div>
+        <div class="weui-cells weui-cells_form">
+            <div class="weui-cell">
+                <div class="weui-cell__hd">
+                    <label class="weui-label">用户名</label>
+                </div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="text" placeholder="请输入用户名" required name="userName" emptyTips="请输入用户名">
+                </div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd">
+                    <label class="weui-label">密码</label>
+                </div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="password" placeholder="请输入密码" required name="userPassword" emptyTips="请输入密码">
+                </div>
+            </div>
+        </div>
+        <div class="weui-btn-area">
+            <a class="weui-btn weui-btn_primary register-btn" href="javascript:">注册</a>
+            <a class="weui-btn weui-btn_primary login-btn" href="javascript:">登录</a>
+        </div>
+    </div>
+    <script src="/h5/lib/jquery-2.1.4.js"></script>
+    <script src="/h5/lib/fastclick.js"></script>
+    <script>
+    $(function() {
+        FastClick.attach(document.body);
+    });
+    </script>
+    <script src="/h5/js/jquery-weui.js"></script>
+    <script src="/h5/js/template-web.js"></script>
+    <script src="/h5/js/default.js"></script>
+    <script>
+    $(".register-btn").click(function(event) {
+        /* Act on the event */
+        var is_validated = $("[name='userName'],[name='userPassword']").validate();
+        if (is_validated) {
+            $.ajax({
+                type: "post",
+                url: "/users/register",
+                data: {
+                    userName: $("[name='userName']").val(),
+                    userPassword: $("[name='userPassword']").val()
+                },
+                dataType: "json",
+                success: function(data) {
+                    if (data.code === 200) {
+                        $.toast("操作成功");
+                    }
+                }
+            });
+        }
+    });
+
+    $(".login-btn").click(function(event) {
+        /* Act on the event */
+        var is_validated = $("[name='userName'],[name='userPassword']").validate();
+        if (is_validated) {
+            $.ajax({
+                type: "post",
+                url: "/users/login",
+                data: {
+                    userName: $("[name='userName']").val(),
+                    userPassword: $("[name='userPassword']").val()
+                },
+                dataType: "json",
+                success: function(data) {
+                    if (data.code === 200) {
+                        $.toast("登录成功");
+                        setCache("userInfo", data.info);
+                        setCache("token", data.token);
+                        setTimeout(function() { window.location.href = "user_info.html"; }, 2000);
+                    } else {
+                        $.toast("用户名密码错误", "cancel");
+                    }
+                }
+            });
+        }
+    });
+    </script>
+</body>
+
+</html>
