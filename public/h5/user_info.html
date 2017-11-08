@@ -121,14 +121,14 @@
 
         var today = new Date().getTime();
         var ex_birthday = $(".birthday-input").val();
-        ex_birthday === "点击设置" ? ex_birthday = [today] : ex_birthday=[ex_birthday];
+        ex_birthday === "点击设置" ? ex_birthday = [today] : ex_birthday = [ex_birthday];
         $(".birthday-input").calendar({
             value: ex_birthday,
             maxDate: today,
             dateFormat: 'yyyy-mm-dd',
             onChange: function(calendar) {
                 console.log(calendar.value);
-                var value=new Date(calendar.value[0]).format("yyyy-MM-dd");
+                var value = new Date(calendar.value[0]).format("yyyy-MM-dd");
                 $.ajax({
                     type: "post",
                     url: "/users/modify",
