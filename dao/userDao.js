@@ -199,7 +199,7 @@ module.exports = {
                     {
                         params = [param_list.userBirthday, param_list.userName];
                         $db.executeSql($sql.updateBirthday, params, pool, function(err, result) {
-console.log(err);
+                            console.log(err);
                             console.log(result);
                             if (result) {
                                 result = {

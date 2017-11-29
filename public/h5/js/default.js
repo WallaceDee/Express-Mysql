@@ -1,4 +1,9 @@
-(function($) {
+    window.onpageshow = function(e) {
+        if (e.persisted) {
+            window.location.reload(true)
+        }
+    }
+;(function($) {
     "use strict";
     $.extend($.fn, {
         validate: function() {
@@ -97,12 +102,21 @@ if (getCache("token") !== null) {
     }
 }
 //0保密 1男    2女
-var gender_list = [{ name: "保密", value: 0 }, { name: "男", value: 1 }, { name: "女", value: 2 }]
+var gender_list = [{ name: "保密", value: 0, class: "unknow" }, { name: "男", value: 1, class: "male" }, { name: "女", value: 2, class: "female" }]
 template.defaults.imports.genderFormat = function(value) {
     var name = gender_list[0].name;
     for (var i = 0; i < gender_list.length; i++) {
         if (value === gender_list[i].value) {
             name = gender_list[i].name;
+        }
+    }
+    return name;
+};
+template.defaults.imports.genderFormat2 = function(value) {
+    var name = gender_list[0].class;
+    for (var i = 0; i < gender_list.length; i++) {
+        if (value === gender_list[i].value) {
+            name = gender_list[i].class;
         }
     }
     return name;

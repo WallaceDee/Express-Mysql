@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <title>个人中心</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="/h5/lib/weui.min.css">
+    <link rel="stylesheet" href="/h5/css/jquery-weui.css">
+    <link rel="stylesheet" href="/h5/css/cropper.min.css">
+    <link rel="stylesheet" href="/h5/css/style.css">
+</head>
+
+<body>
+    <div class="page">
+        <div class="page__bd page-user-center">
+            <div class="header">
+            </div>
+            <div class="weui-grids">
+                <a href="user_info.html" class="weui-grid">
+                    <div class="weui-grid__icon">
+                        <i class="icon icon-business-card"></i>
+                    </div>
+                    <p class="weui-grid__label">
+                        个人信息
+                    </p>
+                </a>
+            </div>
+            <div class="weui-tabbar">
+                <a href="javascript:;" class="weui-tabbar__item ">
+                    <i class="icon icon-home weui-tabbar__icon"></i>
+                    <p class="weui-tabbar__label">微信</p>
+                </a>
+                <a href="javascript:;" class="weui-tabbar__item weui-bar__item_on">
+                    <i class="icon icon-user weui-tabbar__icon"></i>
+                    <p class="weui-tabbar__label">我</p>
+                </a>
+            </div>
+        </div>
+    </div>
+    <script id="page-user-center-header" type="text/html">
+        <div class="avatar-wrapper"> <span class="avatar" style="background-image: url({{if list.userAvatar!==null}}../{{list.userAvatar}}{{else}}images/default.png{{/if}});"></span><i class="icon icon-{{list.userGender|genderFormat2}}"></i></div>
+        <h1>{{list.userNickName}}</h1>
+    </script>
+    <script id="page-user-center" type="text/html">
+    </script>
+    <script src="/h5/lib/jquery-2.1.4.js"></script>
+    <script src="/h5/lib/fastclick.js"></script>
+    <script>
+    $(function() {
+        FastClick.attach(document.body);
+    });
+    </script>
+    <script src="/h5/js/jquery-weui.js"></script>
+    <script src="/h5/js/template-web.js"></script>
+    <script src="/h5/js/default.js"></script>
+    <script>
+
+    $(document).ready(function($) {
+
+        userInfo = getCache("userInfo");
+        var temp_html = template('page-user-center-header', { list: userInfo });
+        $(".page__bd.page-user-center .header").html(temp_html);
+
+
+    });
+    </script>
+</body>
+
+</html>

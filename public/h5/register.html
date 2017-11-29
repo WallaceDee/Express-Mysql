@@ -2,7 +2,7 @@
 <html lang="zh">
 
 <head>
-    <title>注册</title>
+    <title>登录</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
@@ -32,8 +32,8 @@
             </div>
         </div>
         <div class="weui-btn-area">
-            <a class="weui-btn weui-btn_primary register-btn" href="javascript:">注册</a>
             <a class="weui-btn weui-btn_primary login-btn" href="javascript:">登录</a>
+            <a class="weui-btn weui-btn_primary register-btn" href="javascript:">注册</a>
         </div>
     </div>
     <script src="/h5/lib/jquery-2.1.4.js"></script>
@@ -85,7 +85,7 @@
                         $.toast("登录成功");
                         setCache("userInfo", data.info);
                         setCache("token", data.token);
-                        setTimeout(function() { window.location.href = "user_info.html"; }, 2000);
+                        setTimeout(function() { window.location.href = "user_center.html"; }, 2000);
                     } else {
                         $.toast("用户名密码错误", "cancel");
                     }

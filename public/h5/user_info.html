@@ -2,7 +2,7 @@
 <html lang="zh">
 
 <head>
-    <title>用户信息</title>
+    <title>个人信息</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
@@ -13,9 +13,11 @@
 </head>
 
 <body>
-    <div class="page__bd page-user-info">
+    <div class="page">
+        <div class="page__bd page-user-info">
+        </div>
     </div>
-    <div id="cutter" class='weui-popup__container'>
+    <div id="cutter-popup" class='weui-popup__container'>
         <div class="weui-popup__overlay"></div>
         <div class="weui-popup__modal">
             <div class="img-container">
@@ -48,9 +50,10 @@
                 <div class="weui-cell__bd">
                     <p>手机</p>
                 </div>
-                <div class="weui-cell__ft">{{if list.userPhone!==null}}{{list.userPhone}}{{else}}去绑定{{/if}}</div>
+                <div class="weui-cell__ft">
+                 <input class="weui-input phone-input" type="text" readonly="" value="{{if list.userPhone!==null}}{{list.userPhone}}{{else}}去绑定{{/if}}"></div>
             </a>
-            <a class="weui-cell weui-cell_access">
+            <a class="weui-cell weui-cell_access gender-cell">
                 <div class="weui-cell__bd">
                     <p>性别</p>
                 </div>
@@ -58,7 +61,7 @@
                     <input class="weui-input gender-input" type="text" readonly="" value="{{list.userGender|genderFormat}}">
                 </div>
             </a>
-            <a class="weui-cell weui-cell_access" href="javascript:;">
+            <a class="weui-cell weui-cell_access birthday-cell">
                 <div class="weui-cell__bd">
                     <p> 生日</p>
                 </div>
@@ -86,6 +89,110 @@
         $(".page__bd").html(temp_html);
         console.log("-----读取");
 
+        $(document).on("click", ".page-user-info .name-cell", function() {
+            var ex_value = $(this).find(".weui-cell__ft").text();
+
+            $.prompt({
+                title: '修改昵称',
+                input: ex_value,
+                empty: false, // 是否允许为空
+                onOK: function(value) {
+                    console.log(value);
+                    $.ajax({
+                        type: "post",
+                        url: "/users/modify",
+                        data: { userNickName: value, userName: userInfo.userName, type: "userNickName", token: token },
+                        success: function(data) {
+                            if (data.code === 200) {
+                                $(".page-user-info .name-cell .weui-cell__ft").html(value);
+                            }
+                        }
+                    });
+                },
+                onCancel: function() {
+                    //点击取消
+                    //todo
+                }
+            });
+        });
+
+        cropper = null;
+        var image = document.getElementById('crop-image');
+        cropper = new Cropper(image, {
+            aspectRatio: 1,
+            viewMode: 1
+        });
+        $(document).on("change", "[name='uploadAvatar']", function() {
+            // 检查是否为图像类型
+            var simpleFile = this.files[0];
+            if (!/image\/\w+/.test(simpleFile.type)) {
+                alert("请确保文件类型为图像类型");
+                return false;
+            }
+            var reader = new FileReader();
+            // 将文件以二进制文件读入页面中
+            $.showLoading();
+            reader.onload = function(e) {
+                imgFile = e.target.result;
+                $("#cutter-popup").popup();
+                cropper.reset().replace(imgFile);
+                $.hideLoading();
+                //重置input值，避免重复上传同一的图片不触发onchange事件
+                $("[name='uploadAvatar']").val("");
+
+            }
+            reader.readAsDataURL(simpleFile);
+        });
+        $(document).on("click", "#cutter-popup .weui-btn_primary", function() {
+            var src_data = cropper.getCroppedCanvas({
+                with: 200,
+                height: 200
+            }).toDataURL('image/jpeg');
+            $.ajax({
+                type: "post",
+                url: "/users/modify",
+                data: { base64: src_data, userName: userInfo.userName, type: "userAvatar", token: token },
+                success: function(data) {
+                    if (data.code === 200) {
+                        $(".page-user-info .avatar-cell .weui-cell__ft span").css("background-image", "url(" + src_data + ")");
+                        $.closePopup();
+                    }
+                }
+            });
+        });
+
+        $(document).on("click", ".page-user-info .phone-cell", function() {
+            var ex_value = $(this).find("input").val();
+            ex_value === "去绑定" ? ex_value = "" : void 0;
+            $.prompt({
+                title: '修改电话',
+                input: ex_value,
+                empty: false, // 是否允许为空
+                onOK: function(value) {
+                    console.log(value);
+                    $.ajax({
+                        type: "post",
+                        url: "/users/modify",
+                        data: { userPhone: value, userName: userInfo.userName, type: "userPhone", token: token },
+                        success: function(data) {
+                            if (data.code === 200) {
+                                $(".page-user-info .phone-cell .weui-cell__ft input").val(value);
+                            }
+                        }
+                    });
+                },
+                onCancel: function() {
+                    //点击取消
+                    //todo
+                }
+            });
+        });
+
+        $(document).on('click', '.page-user-info .gender-cell', function(event) {
+            event.preventDefault();
+            /* Act on the event */
+            $(".gender-input").picker("open");
+        });
         $(".gender-input").picker({
             title: "请选择性别",
             toolbarTemplate: '<div class="toolbar">\
@@ -119,6 +226,12 @@
             }
         });
 
+        $(document).on('click', '.page-user-info .birthday-cell', function(event) {
+            event.preventDefault();
+            /* Act on the event */
+            $(".birthday-input").calendar("open");  //打开弹窗
+  
+        });
         var today = new Date().getTime();
         var ex_birthday = $(".birthday-input").val();
         ex_birthday === "点击设置" ? ex_birthday = [today] : ex_birthday = [ex_birthday];
@@ -143,111 +256,6 @@
             }
         });
 
-        cropper = null;
-        var image = document.getElementById('crop-image');
-        cropper = new Cropper(image, {
-            aspectRatio: 1,
-            viewMode: 1
-        });
-
-        $(document).on("click", "#cutter .weui-btn_primary", function() {
-            var src_data = cropper.getCroppedCanvas({
-                with: 200,
-                height: 200
-            }).toDataURL('image/jpeg');
-            $.ajax({
-                type: "post",
-                url: "/users/modify",
-                data: { base64: src_data, userName: userInfo.userName, type: "userAvatar", token: token },
-                success: function(data) {
-                    if (data.code === 200) {
-                        $(".page-user-info .avatar-cell .weui-cell__ft span").css("background-image", "url(" + src_data + ")");
-                        $.closePopup();
-                    }
-                }
-            });
-        });
-
-
-
-        $(document).on("click", ".page-user-info .name-cell", function() {
-            var ex_value = $(this).find(".weui-cell__ft").text();
-
-            $.prompt({
-                title: '修改昵称',
-                input: ex_value,
-                empty: false, // 是否允许为空
-                onOK: function(value) {
-                    console.log(value);
-                    $.ajax({
-                        type: "post",
-                        url: "/users/modify",
-                        data: { userNickName: value, userName: userInfo.userName, type: "userNickName", token: token },
-                        success: function(data) {
-                            if (data.code === 200) {
-                                $(".page-user-info .name-cell .weui-cell__ft").html(value);
-                            }
-                        }
-                    });
-                },
-                onCancel: function() {
-                    //点击取消
-                    //todo
-                }
-            });
-        });
-
-
-        $(document).on("click", ".page-user-info .phone-cell", function() {
-            var ex_value = $(this).find(".weui-cell__ft").text();
-            ex_value === "去绑定" ? ex_value = "" : void 0;
-            $.prompt({
-                title: '修改电话',
-                input: ex_value,
-                empty: false, // 是否允许为空
-                onOK: function(value) {
-                    console.log(value);
-                    $.ajax({
-                        type: "post",
-                        url: "/users/modify",
-                        data: { userPhone: value, userName: userInfo.userName, type: "userPhone", token: token },
-                        success: function(data) {
-                            if (data.code === 200) {
-                                $(".page-user-info .phone-cell .weui-cell__ft").html(value);
-                            }
-                        }
-                    });
-                },
-                onCancel: function() {
-                    //点击取消
-                    //todo
-                }
-            });
-        });
-
-
-
-        $(document).on("change", "[name='uploadAvatar']", function() {
-            // 检查是否为图像类型
-            var simpleFile = this.files[0];
-            if (!/image\/\w+/.test(simpleFile.type)) {
-                alert("请确保文件类型为图像类型");
-                return false;
-            }
-            var reader = new FileReader();
-            // 将文件以二进制文件读入页面中
-            $.showLoading();
-            reader.onload = function(e) {
-                imgFile = e.target.result;
-                $("#cutter").popup();
-                cropper.reset().replace(imgFile);
-                $.hideLoading();
-                //重置input值，避免重复上传同一的图片不触发onchange事件
-                $("[name='uploadAvatar']").val("");
-
-            }
-            reader.readAsDataURL(simpleFile);
-        });
     });
     </script>
 </body>

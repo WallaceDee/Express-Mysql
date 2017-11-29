@@ -1,3 +1,45 @@
+@font-face {
+  font-family: 'icomoon';
+  src:
+    url('../fonts/icomoon.ttf?837nzs') format('truetype'),
+    url('../fonts/icomoon.woff?837nzs') format('woff'),
+    url('../fonts/icomoon.svg?837nzs#icomoon') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'icomoon' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-home:before {
+  content: "\e900";
+}
+.icon-user:before {
+  content: "\e901";
+}
+.icon-business-card:before {
+  content: "\e902";
+}
+.icon-female:before {
+  content: "\f221";
+}
+.icon-male:before {
+  content: "\f222";
+}
+
+
 body,
 html {
     height: 100%;
@@ -5,11 +47,19 @@ html {
 }
 
 body {
-    font-family: -apple-system-font, Helvetica Neue, Helvetica, sans-serif
+    font-family:"Microsoft YaHei", -apple-system-font, Helvetica Neue, Helvetica, sans-serif
 }
 
 ul {
     list-style: none
+}
+
+.page {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
 }
 
 .page,
@@ -45,9 +95,14 @@ body {
 }
 
 .page-user-info .avatar-cell span {
-display: block;height: 60px;width: 60px;background-color: #eee;border-radius: 50%;
-background-repeat: no-repeat;background-size: cover;
-background-position: center;
+    display: block;
+    height: 60px;
+    width: 60px;
+    background-color: #eee;
+    border-radius: 50%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
 }
 
 #cutter .img-container {
@@ -59,6 +114,74 @@ background-position: center;
 #cutter .button-wrapper {
     margin-top: 10px;
 }
-.page-user-info .weui-cell__ft input{
-	text-align: right;
+
+.page-user-info .weui-cell__ft input {
+    text-align: right;
+}
+
+.page-user-center .header {
+    height: 150px;
+    background-color: #1aad19;
+    background: -webkit-gradient(linear, 0 0, 0 bottom, from(#2d7b2d), to(#7ac725));
+    overflow: auto;
+}
+
+.page-user-center .avatar-wrapper {
+    width: 90px;
+    height: 90px;
+    margin-left: auto;
+    margin-right: auto;
+    border: 3px solid rgba(255,255,255,.5);
+    border-radius: 50%;
+    margin-top:15px;
+    margin-bottom: 5px;
+    position: relative;
+}
+
+.page-user-center .avatar-wrapper .avatar{
+	display: block;
+	width: 90px;
+	height: 90px;
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: center;
+	background-color: #eee;
+	border-radius: 50%;
+}
+.page-user-center .header h1{
+	font-size:18px;font-weight: normal;
+	text-align: center;
+	color: #fff;
+}
+.page-user-center  .weui-grid__icon{
+	font-size: 30px;
+	width: inherit;
+	text-align: center;
+	height: inherit;
+}
+.page-user-center .weui-grids>a,.page-user-center .weui-grid__label{
+	color: #999;
+}
+.page-user-center .avatar-wrapper .icon{
+	position: absolute;
+	right: 5px;
+	bottom: 0;
+	font-size: 12px;
+	color: #fff;
+	display: block;
+	width: 15px;
+	height: 15px;
+	background-color: #ddd;
+	text-align: center;
+	line-height: 15px;
+	border-radius: 50%;
+	border: 1px solid #fff;
+}
+.page-user-center .avatar-wrapper .icon.icon-female{
+	background-color: #ED4997;
+}
+.page-user-center .avatar-wrapper .icon.icon-male{
+	background-color: #4B5DD1;
+}.icon.icon-unknow:before{
+	content: "?"
 }
