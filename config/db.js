@@ -2,8 +2,8 @@ var mysql = require('mysql');
 module.exports = {
     mysql: {
         host: '127.0.0.1',
-        user: 'h',
-        password: '123456',
+        user: 'root',
+        password: '',
         database: 'x',
         port: 3306
     },
