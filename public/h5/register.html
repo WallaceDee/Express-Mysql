@@ -54,6 +54,7 @@
             $.ajax({
                 type: "post",
                 url: "/users/register",
+                headers: { token: '22222222' },
                 data: {
                     userName: $("[name='userName']").val(),
                     userPassword: $("[name='userPassword']").val()

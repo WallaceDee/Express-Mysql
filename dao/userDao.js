@@ -1,39 +1,40 @@
 // dao/userDao.js
 // 实现与MySQL交互
-var $db = require('../config/db');
-var $util = require('../util/util');
-var $sql = require('./userSqlMapping');
-var fs = require("fs");
-var uuid = require('uuid');
-var jwt = require('jsonwebtoken');
-// 使用连接池，提升性能
-var pool = $db.connect();
-var cert = fs.readFileSync('config/private.key', 'utf-8'); // get private key
+let $db = require('../config/db');
+let $util = require('../util/util');
+let $sql = require('./userSqlMapping');
+let fs = require("fs");
+let uuid = require('uuid');
+let jwt = require('jsonwebtoken');
+
+let cert = fs.readFileSync('config/private.key', 'utf-8'); // get private key
 console.log(cert);
 module.exports = {
-    list: function(req, res) {
+    list: (req, res) => {
         //query: 'SELECT * FROM table_user WHERE userName LIKE "%?%" OR userPhone LIKE "%?%"',
-        var param_list = $util.extend(req.query, {
+        let query = $util.extend(req.query, {
             userName: "",
             userPhone: ""
         }); //get
-        var params = [param_list.userName, param_list.userPhone, parseInt(param_list.rows * (param_list.page - 1)), parseInt(param_list.rows)];
-        var total = 0;
-        var rows = [];
-        $db.executeSql($sql.count, params, pool, function(err, result) {
-            total = parseInt(JSON.stringify(result[0]).match(/{"COUNT\(\*\)\":(\S*)}/)[1]);
-            console.log(total);
-            $db.executeSql($sql.list, params, pool, function(err, result) {
-                rows = result;
-                $util.print(res, { total: total, rows: rows });
+        let params = [];
+        params.push(query.userName)
+        params.push(query.userPhone)
+        params.push(query.rows * 1 * (query.page - 1))
+        params.push(query.rows * 1)
+        let total = 0
+        let rows = []
+        $db.executeSql($sql.count, params, (err, result) => {
+            total = result[0]['COUNT(*)']
+            $db.executeSql($sql.list, params, (err, result) => {
+                rows = result
+                $util.print(res, { total: total, rows: rows })
             });
         });
     },
     add: function(req, res) {
         //  insert: 'INSERT INTO table_user(userName,userPassword,createTime,updateTime) VALUES(?,?,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP)',
-        var param_list = req.body;
-
-
+        var query = req.body;
+        console.log(req.headers.token)
         var name = "";
         for (var i = 0; i < 4; i++) {
             name += '\\u' + (Math.round(Math.random() * 20901) + 19968).toString(16);
@@ -42,8 +43,8 @@ module.exports = {
         //随机四字中文名字
         console.log(name);
 
-        var params = [param_list.userName, name, param_list.userPassword];
-        $db.executeSql($sql.insert, params, pool, function(err, result) {
+        var params = [query.userName, name, query.userPassword];
+        $db.executeSql($sql.insert, params, function(err, result) {
             console.log(err);
             if (result) {
                 result = {
@@ -56,9 +57,9 @@ module.exports = {
     },
     delete: function(req, res) {
         //  delete: 'DELETE FROM table_user WHERE userId=?',
-        var param_list = req.body;
-        var params = [param_list.userId];
-        $db.executeSql($sql.delete, params, pool, function(err, result) {
+        var query = req.body;
+        var params = [query.userId];
+        $db.executeSql($sql.delete, params, function(err, result) {
             if (result) {
                 result = {
                     code: 200,
@@ -70,9 +71,9 @@ module.exports = {
     },
     update: function(req, res) {
         // update: 'UPDATE table_user SET userName=?,userAvatar=? ,userPhone=? ,userGender=?,updateTime=CURRENT_TIMESTAMP WHERE userId=?',
-        var param_list = req.body;
-        var params = [param_list.userName, param_list.userAvatar, param_list.userPhone, param_list.userGender, param_list.userId];
-        $db.executeSql($sql.update, params, pool, function(err, result) {
+        var query = req.body;
+        var params = [query.userName, query.userAvatar, query.userPhone, query.userGender, query.userId];
+        $db.executeSql($sql.update, params, function(err, result) {
             if (result) {
                 result = {
                     code: 200,
@@ -84,9 +85,9 @@ module.exports = {
     },
 
     login: function(req, res) {
-        var param_list = req.body;
-        var params = [param_list.userName, param_list.userPassword];
-        $db.executeSql($sql.login, params, pool, function(err, result) {
+        var query = req.body;
+        var params = [query.userName, query.userPassword];
+        $db.executeSql($sql.login, params, function(err, result) {
             if (result.length === 0) {
                 result = {
                     code: 0,
@@ -106,10 +107,10 @@ module.exports = {
         });
     },
     getUserInfo: function(req, res) {
-        var param_list = req.body;
-        var params = [param_list.token, param_list.userName];
+        var query = req.body;
+        var params = [query.token, query.userName];
         $util.checkToken(params[0], params[1], res, function() {
-            $db.executeSql($sql.getUserInfo, params[1], pool, function(err, result) {
+            $db.executeSql($sql.getUserInfo, params[1], function(err, result) {
                 console.log(result);
                 if (result) {
                     result = {
@@ -122,19 +123,19 @@ module.exports = {
         });
     },
     modify: function(req, res) {
-        var param_list = req.body;
-        var type = param_list.type;
+        var query = req.body;
+        var type = query.type;
         var params = [];
-        $util.checkToken(param_list.token, param_list.userName, res, function() {
+        $util.checkToken(query.token, query.userName, res, function() {
             switch (type) {
                 case "userAvatar":
                     {
                         //过滤data:URL
-                        var base64Data = param_list.base64.replace(/^data:image\/\w+;base64,/, "");
+                        var base64Data = query.base64.replace(/^data:image\/\w+;base64,/, "");
                         var dataBuffer = new Buffer(base64Data, 'base64');
                         var path = "public/upload/user_avatar/" + uuid.v1() + ".png";
-                        params = [path.replace("public/", ""), param_list.userName];
-                        $db.executeSql($sql.updateAvatar, params, pool, function(err, result) {
+                        params = [path.replace("public/", ""), query.userName];
+                        $db.executeSql($sql.updateAvatar, params, function(err, result) {
                             if (result) {
                                 result = {
                                     code: 200,
@@ -143,7 +144,9 @@ module.exports = {
                             }
                             $util.print(res, result);
                         });
+
                         fs.writeFile(path, dataBuffer, function(err, res) {
+                            console.log(err)
                             if (err) {
                                 res.send(err);
                             } else {
@@ -154,9 +157,9 @@ module.exports = {
                     break;
                 case "userNickName":
                     {
-                        params = [param_list.userNickName, param_list.userName];
+                        params = [query.userNickName, query.userName];
 
-                        $db.executeSql($sql.updateNickName, params, pool, function(err, result) {
+                        $db.executeSql($sql.updateNickName, params, function(err, result) {
                             if (result) {
                                 result = {
                                     code: 200,
@@ -169,8 +172,8 @@ module.exports = {
                     break;
                 case "userPhone":
                     {
-                        params = [param_list.userPhone, param_list.userName];
-                        $db.executeSql($sql.updatePhone, params, pool, function(err, result) {
+                        params = [query.userPhone, query.userName];
+                        $db.executeSql($sql.updatePhone, params, function(err, result) {
                             if (result) {
                                 result = {
                                     code: 200,
@@ -183,8 +186,8 @@ module.exports = {
                     break;
                 case "userGender":
                     {
-                        params = [param_list.userGender, param_list.userName];
-                        $db.executeSql($sql.updateGender, params, pool, function(err, result) {
+                        params = [query.userGender, query.userName];
+                        $db.executeSql($sql.updateGender, params, function(err, result) {
                             if (result) {
                                 result = {
                                     code: 200,
@@ -197,8 +200,8 @@ module.exports = {
                     break;
                 case "userBirthday":
                     {
-                        params = [param_list.userBirthday, param_list.userName];
-                        $db.executeSql($sql.updateBirthday, params, pool, function(err, result) {
+                        params = [query.userBirthday, query.userName];
+                        $db.executeSql($sql.updateBirthday, params, function(err, result) {
                             console.log(err);
                             console.log(result);
                             if (result) {

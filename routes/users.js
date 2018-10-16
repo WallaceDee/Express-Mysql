@@ -6,7 +6,7 @@ var userDao = require('../dao/userDao');
 router.get('/', function(req, res, next) {
     res.render('user');
 });
-router.get('/list', function(req, res, next) {
+router.get('/list', (req, res, next) => {
     userDao.list(req, res, next)
 });
 router.post('/deleteUser', function(req, res, next) {
