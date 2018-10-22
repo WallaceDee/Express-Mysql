@@ -1,10 +1,36 @@
 /**
  * Created by fujunou on 2015/3/6.
  */
-var jwt = require('jsonwebtoken');
-var fs = require("fs");
-var cert = fs.readFileSync('config/private.key', 'utf-8'); // get private key
+var jwt = require('jsonwebtoken'); //用来创建和确认用户信息摘要
+let fs = require("fs");
+let cert = fs.readFileSync('config/public.key'); // get private key
+
 module.exports = {
+    ensureAuthorized: function(req, res, next) {
+        //检查post的信息或者url查询参数或者头信息
+        var access_token = req.headers['access_token'];
+        // 解析 token
+        if (access_token) {
+            // 确认token
+            jwt.verify(access_token, cert, { algorithms: ['RS256'] }, function(err, decoded) {
+                console.log(err)
+                if (err) {
+                    return res.json({ success: false, message: 'invalid token.' });
+                } else {
+                    // 如果没问题就把解码后的信息保存到请求中，供后面的路由使用
+                    req.userInfo = decoded;
+                    console.dir(req.userInfo);
+                    next();
+                }
+            });
+        } else {
+            // 如果没有token，则返回错误
+            return res.status(403).send({
+                success: false,
+                message: '没有提供token！'
+            });
+        }
+    },
     extend: function(target, source, flag) {
         for (var key in source) {
             if (source.hasOwnProperty(key))
@@ -14,26 +40,18 @@ module.exports = {
         }
         return target;
     },
-    print: function(res, ret) {
-        if (typeof ret === 'undefined') {
+    print: function(res, err, result) {
+        if (err) {
+            console.log(err)
             res.json({
-                code: 0,
-                msg: 'error'
+                status: 0,
+                result
             });
         } else {
-            res.json(ret);
+            res.json({
+                status: 1,
+                result
+            });
         }
-    },
-    checkToken: function(token, userName, res, callback) {
-        jwt.verify(token, cert, function(err, decoded) {
-            if (decoded !== undefined && decoded.userName === userName) {
-                callback();
-            } else {
-                res.json({
-                    code: 0,
-                    info: "invalid token"
-                });
-            }
-        });
     }
 }

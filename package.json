@@ -11,9 +11,14 @@
     "debug": "~2.6.9",
     "ejs": "~2.5.7",
     "express": "~4.15.5",
+    "express-session": "^1.15.6",
     "fs": "^0.0.1-security",
     "jsonwebtoken": "^8.3.0",
     "morgan": "~1.9.0",
-    "serve-favicon": "~2.4.5"
+    "mysql": "^2.16.0",
+    "request": "^2.88.0",
+    "serve-favicon": "~2.4.5",
+    "ueditor": "^1.2.3",
+    "uuid": "^3.3.2"
   }
 }
