@@ -15,7 +15,7 @@ module.exports = {
             jwt.verify(access_token, cert, { algorithms: ['RS256'] }, function(err, decoded) {
                 console.log(err)
                 if (err) {
-                    return res.json({ success: false, message: 'invalid token.' });
+                    return res.status(403).send({ status: 0, result: { message: 'invalid token.' } });
                 } else {
                     // 如果没问题就把解码后的信息保存到请求中，供后面的路由使用
                     req.userInfo = decoded;
@@ -26,8 +26,10 @@ module.exports = {
         } else {
             // 如果没有token，则返回错误
             return res.status(403).send({
-                success: false,
-                message: '没有提供token！'
+                status: 0,
+                result: {
+                    message: '没有提供token！'
+                }
             });
         }
     },
@@ -42,10 +44,9 @@ module.exports = {
     },
     print: function(res, err, result) {
         if (err) {
-            console.log(err)
             res.json({
                 status: 0,
-                result
+                result:err
             });
         } else {
             res.json({

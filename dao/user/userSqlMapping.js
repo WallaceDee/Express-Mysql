@@ -12,6 +12,7 @@ var user = {
     updateGender: 'UPDATE table_user SET userGender=? ,updateTime=CURRENT_TIMESTAMP WHERE userName=?',
     updateBirthday: 'UPDATE table_user SET userBirthday=? ,updateTime=CURRENT_TIMESTAMP WHERE userName=?',
     checkIfExistByWeiboId: 'SELECT userId,userName,userNickName,userAvatar,userBirthday,userPhone,userGender,createTime FROM table_user WHERE weiboId=?',
-    signUpWithWeibo: 'INSERT INTO table_user(weiboId,userNickName,userAvatar,userGender,createTime,updateTime) VALUES(?,?,?,?,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP)'
+    signUpWithWeibo: 'INSERT INTO table_user(weiboId,userNickName,userAvatar,userGender,createTime,updateTime) VALUES(?,?,?,?,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP)',
+    getUserByUserName: 'SELECT userName FROM table_user WHERE table_user.userName=?'
 }
 module.exports = user;

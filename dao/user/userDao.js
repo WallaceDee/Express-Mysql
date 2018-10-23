@@ -3,11 +3,22 @@
 let $db = require('../../config/db');
 let $util = require('../../util/util');
 let $sql = require('./userSqlMapping');
-let fs = require("fs");
 let uuid = require('uuid');
 let jwt = require('jsonwebtoken');
+let fs = require("fs");
+let cert = fs.readFileSync('config/private.key'); // get private key
+const crypto = require("crypto");
 
 module.exports = {
+    getUserAvailable: (req, res) => {
+        $db.executeSql($sql.getUserByUserName, [req.body.username], (error, result) => {
+            if (result.length === 0) {
+                $util.print(res, error, { message: '用户名可用' })
+            } else {
+                $util.print(res, { message: '用户名已存在' }, { message: '用户名已存在' })
+            }
+        })
+    },
     list: (req, res) => {
         //query: 'SELECT * FROM table_user WHERE userName LIKE "%?%" OR userPhone LIKE "%?%"',
         let query = $util.extend(req.query, {
@@ -29,28 +40,20 @@ module.exports = {
             });
         });
     },
-    add: function(req, res) {
+    register: function(req, res) {
         //  insert: 'INSERT INTO table_user(userName,userPassword,createTime,updateTime) VALUES(?,?,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP)',
-        var query = req.body;
-        console.log(req.headers.token)
-        var name = "";
+        var query = req.body
+        var name = ""
         for (var i = 0; i < 4; i++) {
-            name += '\\u' + (Math.round(Math.random() * 20901) + 19968).toString(16);
+            name += '\\u' + (Math.round(Math.random() * 20901) + 19968).toString(16)
         }
-        name = unescape(name.replace(/\\u/g, '%u'));
-        //随机四字中文名字
-        console.log(name);
-
-        var params = [query.userName, name, query.userPassword];
-        $db.executeSql($sql.insert, params, function(err, result) {
-            console.log(err);
-            if (result) {
-                result = {
-                    code: 200,
-                    msg: '注册成功'
-                };
-            }
-            $util.print(res, result);
+        name = unescape(name.replace(/\\u/g, '%u'))
+        let password = query.password
+        let md5 = crypto.createHash("md5")
+        password = md5.update(password).digest("hex")
+        var params = [query.username, name, password]
+        $db.executeSql($sql.insert, params, function(error, result) {
+            $util.print(res, error, { message: '注册成功' })
         });
     },
     delete: function(req, res) {
@@ -82,26 +85,23 @@ module.exports = {
         });
     },
     login: function(req, res) {
-        var query = req.body;
-        var params = [query.userName, query.userPassword];
-        $db.executeSql($sql.login, params, function(err, result) {
-            if (result.length === 0) {
-                result = {
-                    code: 0,
-                    msg: '登录失败'
-                };
-            } else {
+        let query = req.body
+        let password = query.password
+        let md5 = crypto.createHash("md5")
+        password = md5.update(password).digest("hex")
+        let params = [query.username, password]
+        console.log(password)
+        $db.executeSql($sql.login, params, function(error, result) {
 
-                // result[0].token = token;
-                result = {
-                    code: 200,
-                    msg: '登录成功',
-                    info: result[0],
-                    token: token
-                };
+            if (result.length === 1) {
+                let access_token = jwt.sign({ userName: result[0].userName, userId: result[0].userId }, cert, { expiresIn: "2h", algorithm: 'RS256' });
+                result[0].access_token = access_token
+
+                $util.print(res, error, result[0])
+            } else {
+                $util.print(res, { message: '用户名或密码错误' }, { message: '用户名或密码错误' })
             }
-            $util.print(res, result);
-        });
+        })
     },
     getUserInfo: function(req, res) {
         var query = req.body;

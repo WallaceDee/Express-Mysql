@@ -1,3 +1,370 @@
-<h1><%= message %></h1>
-<h2><%= error.status %></h2>
-<pre><%= error.stack %></pre>
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=450, user-scalable=no">
+    <title>
+        <%= error.status %>
+        <%= message %>
+    </title>
+    <style type="text/css">
+    body,
+    div,
+    dl,
+    dt,
+    dd,
+    ul,
+    ol,
+    li,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    pre,
+    form,
+    fieldset,
+    input,
+    textarea,
+    p,
+    blockquote,
+    th,
+    td {
+        margin: 0;
+        padding: 0
+    }
+
+    table {
+        border-collapse: collapse;
+        border-spacing: 0
+    }
+
+    fieldset,
+    img {
+        border: 0
+    }
+
+    address,
+    caption,
+    cite,
+    code,
+    dfn,
+    em,
+    strong,
+    th,
+    var {
+        font-style: normal;
+        font-weight: normal
+    }
+
+    ol,
+    ul {
+        list-style: none
+    }
+
+    caption,
+    th {
+        text-align: left
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        font-size: 100%;
+        font-weight: normal
+    }
+
+    q:before,
+    q:after {
+        content: ''
+    }
+
+    abbr,
+    acronym {
+        border: 0
+    }
+
+    body {
+        font: normal 12px Helvetica, Arial, sans-serif;
+        color: #464646
+    }
+
+    html {
+        height: 100%
+    }
+
+    body {
+        background: #cf7114 url(/images/bg_body.png) left top repeat-x;
+        text-align: center;
+        height: 100%
+    }
+
+    #wrap {
+        background: url(/images/bg_footprints.png) center 220px no-repeat;
+        position: relative;
+        width: 100%;
+        height: 100%
+    }
+
+    #header {
+        background: url(/images/bg_top.png) left top repeat-x;
+        padding-top: 50px
+    }
+
+    h2 {
+        font-size: 30px;
+        color: #fff;
+        margin-top: 20px;
+        line-height: 38px;
+        margin-bottom: 15px
+    }
+
+    a {
+        outline: 0;
+        text-decoration: none;
+        color: #fff
+    }
+
+    a:hover {
+        text-decoration: underline
+    }
+
+    .clearfix:after {
+        content: ".";
+        display: block;
+        height: 0;
+        clear: both;
+        visibility: hidden
+    }
+
+    .clearfix {
+        display: inline-block
+    }
+
+    .clearfix {
+        zoom: 1;
+        display: block
+    }
+
+    html .error_page {
+        overflow: hidden
+    }
+
+    .error_page #wrap {
+        position: relative
+    }
+
+    .error_page h2 {
+        height: 60px;
+        line-height: 60px;
+        margin: 0 auto;
+        font-size: 48px;
+        font-family: '华文行楷';
+        color: #fff
+    }
+
+    .error_page h2 a:hover {
+        text-decoration: none
+    }
+
+    .error_page h2#smash_page {
+        background-position: -520px bottom
+    }
+
+    .error_page h2#smash_server {
+        background-position: -780px bottom
+    }
+
+    .error_page h2 a {
+        background: url(../img/smash_sprites02.png) no-repeat;
+        display: block;
+        height: 100%
+    }
+
+    .error_page h2 a:hover {
+        background-position: -260px top
+    }
+
+    #smash {
+        width: 100%;
+        height: 520px;
+        overflow: hidden;
+        position: fixed;
+        margin: 0 auto;
+        bottom: 0;
+        left: 0
+    }
+
+    #smash img {
+        display: block
+    }
+
+    .skull {
+        width: 560px;
+        margin: 0 auto;
+        background: #F00;
+        position: relative
+    }
+
+    .face,
+    .eyes,
+    .hilites,
+    .pupils {
+        position: absolute
+    }
+
+    .face {
+        top: 0;
+        left: 0
+    }
+
+    .eyes {
+        background: #FFF;
+        top: 170px;
+        left: 200px;
+        width: 237px;
+        height: 117px;
+        overflow: hidden
+    }
+
+    .hilites {
+        top: 10px;
+        left: 17px
+    }
+
+    .pupils {
+        top: 5px;
+        left: 17px
+    }
+
+    .skull a {
+        position: absolute;
+        z-index: 100;
+        display: block;
+        height: 420px;
+        width: 540px;
+        top: 0;
+        left: 0
+    }
+
+    #smash_page pre {
+        text-align: left;
+    }
+    </style>
+    <script type="text/javascript" src="/javascripts/jquery.min.js"></script>
+    <script type="text/javascript">
+    jQuery.easing.jswing = jQuery.easing.swing, jQuery.extend(jQuery.easing, {
+        def: "easeOutQuad",
+        swing: function(e, t, n, r, i) { return jQuery.easing[jQuery.easing.def](e, t, n, r, i) },
+        easeInQuad: function(e, t, n, r, i) { return r * (t /= i) * t + n },
+        easeOutQuad: function(e, t, n, r, i) { return -r * (t /= i) * (t - 2) + n },
+        easeInOutQuad: function(e, t, n, r, i) { return (t /= i / 2) < 1 ? r / 2 * t * t + n : -r / 2 * (--t * (t - 2) - 1) + n },
+        easeInCubic: function(e, t, n, r, i) { return r * (t /= i) * t * t + n },
+        easeOutCubic: function(e, t, n, r, i) { return r * ((t = t / i - 1) * t * t + 1) + n },
+        easeInOutCubic: function(e, t, n, r, i) { return (t /= i / 2) < 1 ? r / 2 * t * t * t + n : r / 2 * ((t -= 2) * t * t + 2) + n },
+        easeInQuart: function(e, t, n, r, i) { return r * (t /= i) * t * t * t + n },
+        easeOutQuart: function(e, t, n, r, i) { return -r * ((t = t / i - 1) * t * t * t - 1) + n },
+        easeInOutQuart: function(e, t, n, r, i) { return (t /= i / 2) < 1 ? r / 2 * t * t * t * t + n : -r / 2 * ((t -= 2) * t * t * t - 2) + n },
+        easeInQuint: function(e, t, n, r, i) { return r * (t /= i) * t * t * t * t + n },
+        easeOutQuint: function(e, t, n, r, i) { return r * ((t = t / i - 1) * t * t * t * t + 1) + n },
+        easeInOutQuint: function(e, t, n, r, i) { return (t /= i / 2) < 1 ? r / 2 * t * t * t * t * t + n : r / 2 * ((t -= 2) * t * t * t * t + 2) + n },
+        easeInSine: function(e, t, n, r, i) { return -r * Math.cos(t / i * (Math.PI / 2)) + r + n },
+        easeOutSine: function(e, t, n, r, i) { return r * Math.sin(t / i * (Math.PI / 2)) + n },
+        easeInOutSine: function(e, t, n, r, i) { return -r / 2 * (Math.cos(Math.PI * t / i) - 1) + n },
+        easeInExpo: function(e, t, n, r, i) { return t == 0 ? n : r * Math.pow(2, 10 * (t / i - 1)) + n },
+        easeOutExpo: function(e, t, n, r, i) { return t == i ? n + r : r * (-Math.pow(2, -10 * t / i) + 1) + n },
+        easeInOutExpo: function(e, t, n, r, i) { return t == 0 ? n : t == i ? n + r : (t /= i / 2) < 1 ? r / 2 * Math.pow(2, 10 * (t - 1)) + n : r / 2 * (-Math.pow(2, -10 * --t) + 2) + n },
+        easeInCirc: function(e, t, n, r, i) { return -r * (Math.sqrt(1 - (t /= i) * t) - 1) + n },
+        easeOutCirc: function(e, t, n, r, i) { return r * Math.sqrt(1 - (t = t / i - 1) * t) + n },
+        easeInOutCirc: function(e, t, n, r, i) { return (t /= i / 2) < 1 ? -r / 2 * (Math.sqrt(1 - t * t) - 1) + n : r / 2 * (Math.sqrt(1 - (t -= 2) * t) + 1) + n },
+        easeInElastic: function(e, t, n, r, i) {
+            var s = 1.70158,
+                o = 0,
+                u = r;
+            if (t == 0) { return n }
+            if ((t /= i) == 1) { return n + r } o || (o = i * 0.3);
+            if (u < Math.abs(r)) { u = r; var s = o / 4 } else { var s = o / (2 * Math.PI) * Math.asin(r / u) }
+            return -(u * Math.pow(2, 10 * (t -= 1)) * Math.sin((t * i - s) * 2 * Math.PI / o)) + n
+        },
+        easeOutElastic: function(e, t, n, r, i) {
+            var s = 1.70158,
+                o = 0,
+                u = r;
+            if (t == 0) { return n }
+            if ((t /= i) == 1) { return n + r } o || (o = i * 0.3);
+            if (u < Math.abs(r)) { u = r; var s = o / 4 } else { var s = o / (2 * Math.PI) * Math.asin(r / u) }
+            return u * Math.pow(2, -10 * t) * Math.sin((t * i - s) * 2 * Math.PI / o) + r + n
+        },
+        easeInOutElastic: function(e, t, n, r, i) {
+            var s = 1.70158,
+                o = 0,
+                u = r;
+            if (t == 0) { return n }
+            if ((t /= i / 2) == 2) { return n + r } o || (o = i * 0.3 * 1.5);
+            if (u < Math.abs(r)) { u = r; var s = o / 4 } else { var s = o / (2 * Math.PI) * Math.asin(r / u) }
+            return t < 1 ? -0.5 * u * Math.pow(2, 10 * (t -= 1)) * Math.sin((t * i - s) * 2 * Math.PI / o) + n : u * Math.pow(2, -10 * (t -= 1)) * Math.sin((t * i - s) * 2 * Math.PI / o) * 0.5 + r + n
+        },
+        easeInBack: function(e, t, n, r, i, s) { return s == undefined && (s = 1.70158), r * (t /= i) * t * ((s + 1) * t - s) + n },
+        easeOutBack: function(e, t, n, r, i, s) { return s == undefined && (s = 1.70158), r * ((t = t / i - 1) * t * ((s + 1) * t + s) + 1) + n },
+        easeInOutBack: function(e, t, n, r, i, s) { return s == undefined && (s = 1.70158), (t /= i / 2) < 1 ? r / 2 * t * t * (((s *= 1.525) + 1) * t - s) + n : r / 2 * ((t -= 2) * t * (((s *= 1.525) + 1) * t + s) + 2) + n },
+        easeInBounce: function(e, t, n, r, i) { return r - jQuery.easing.easeOutBounce(e, i - t, 0, r, i) + n },
+        easeOutBounce: function(e, t, n, r, i) { return (t /= i) < 1 / 2.75 ? r * 7.5625 * t * t + n : t < 2 / 2.75 ? r * (7.5625 * (t -= 1.5 / 2.75) * t + 0.75) + n : t < 2.5 / 2.75 ? r * (7.5625 * (t -= 2.25 / 2.75) * t + 0.9375) + n : r * (7.5625 * (t -= 2.625 / 2.75) * t + 0.984375) + n },
+        easeInOutBounce: function(e, t, n, r, i) { return t < i / 2 ? jQuery.easing.easeInBounce(e, t * 2, 0, r, i) * 0.5 + n : jQuery.easing.easeOutBounce(e, t * 2 - i, 0, r, i) * 0.5 + r * 0.5 + n }
+    });
+    $(function() {
+        function n() { t.w = $(window).width(), t.h = $(window).height() } $(window).bind("load", function() { window.scrollTo(0, 1) }), $("#smash").css("bottom", -420);
+        var e = 0,
+            t = {};
+        n(), $(window).resize(function() { n() }), $(window).load(function() { $("#smash").animate({ bottom: -135 }, 500, "easeOutQuart") });
+        var r = { e: $("#smash .pupils") };
+        r.x = parseInt(r.e.css("left")), r.y = parseInt(r.e.css("top"));
+        var i = { e: $("#smash .hilites") };
+        i.x = parseInt($("#smash .hilites").css("left")), i.y = parseInt($("#smash .hilites").css("top")), $(document).mousemove(function(e) {
+            var n = { x: e.pageX / t.w * 2 - 1, y: e.pageY / t.h * 2 - 1 };
+            r.moveX = parseInt(n.x * 28 + r.x), r.moveY = parseInt(n.y * 25 + r.y), i.moveX = parseInt(n.x * 7 + i.x), i.moveY = parseInt(n.y * 6 + i.y), r.e.css({ left: r.moveX, top: r.moveY }), i.e.css({ left: i.moveX, top: i.moveY })
+        });
+        var s = "swing",
+            o = 5;
+        $(".skull").css("cursor", "pointer").click(function(t) {
+        	$("#yell")[0].play()
+            var n = t.shiftKey ? 800 : 100;
+            e <= o ? $("#smash").animate({ left: -50, bottom: -60 }, n, s).animate({ left: 50, bottom: -15 }, n, s).animate({ left: -50 }, n, s).animate({ left: 50, bottom: -60 }, n, s).animate({ left: 0, bottom: -135 }, n, s) : e > o && $("#smash").animate({ bottom: -420 }, 500, s), e == o && $(this).append('<a href="http://www.chenguohua.com.cn/" />'), e++
+        })
+    });
+    </script>
+</head>
+
+<body class="error_page">
+    <div id="wrap" class="clearfix">
+        <div id="header"></div>
+        <div id="smash_page">
+            <h1>
+                <%= message %>
+            </h1>
+            <h2>
+                <%= error.status %>
+            </h2>
+        </div>
+        <audio src="/images/6443.mp3" autoplay="autoplay" id="yell">
+        </audio>
+        <div id="smash" style="bottom: -135px;">
+            <div class="skull" style="cursor: pointer;">
+                <div class="eyes">
+                    <img alt="Eyes01" class="pupils" src="/images/eyes.png" style="left: 29px; top: 6px;">
+                    <img alt="Hilites02" class="hilites" src="/images/hilites.png" style="left: 20px; top: 10px;">
+                </div>
+                <img alt="Face04" class="face" src="/images/face.png">
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+    console.log(`<%= error.stack %>`)
+    </script>
+</body>
+
+</html>
