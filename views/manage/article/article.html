@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="/stylesheets/reset.css">
+    <link rel="stylesheet" type="text/css" href="/easyUI/themes/bootstrap/easyui.css">
+    <link rel="stylesheet" type="text/css" href="/easyUI/themes/icon.css">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/style.css">
+    <script type="text/javascript" src="/javascripts/jquery.min.js"></script>
+    <script type="text/javascript" src="/javascripts/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="/javascripts/default.js"></script>
+</head>
+
+<body>
+    <table id="datagrid">
+    </table>
+    <div id="toolbar">
+        <p> <input name="keyword" placeholder="作者、标题、类型">
+            <a class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="doSearch()">搜索</a>
+            <a class="easyui-linkbutton" data-options="iconCls:'icon-remove'" onclick="doDelete()">删除</a>
+        </p>
+        <p>
+    </div>
+    <div id="window" class="easyui-window" title="确认修改内容" data-options="modal:true,closed:true,iconCls:'icon-save',collapsible:false" style="width:600px;height:300px;">
+        <table id="preview-datagrid" style="height: 210px;">
+        </table>
+        <div class="button-row"> <a onclick="acceptChanges()" class="easyui-linkbutton" data-options="iconCls:'icon-ok'">确认</a><a onclick="closeWindow()" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'">取消</a></div>
+    </div>
+    <script type="text/javascript">
+    var $datagrid = $('#datagrid')
+    var $window = $("#window");
+    $datagrid.datagrid({
+        fit: true,
+        toolbar: '#toolbar',
+        url: '/api/article/list',
+        method: 'post',
+        queryParams: { access_token: $.getCache({ key: 'loginInfo' }).access_token },
+        pagination: true,
+        remoteSort: false,
+        columns: [
+            [{ field: 'ck', checkbox: true, rowspan: 2 },
+                { title: 'ID', field: 'articleId', rowspan: 2 },
+                { title: '标题', field: 'title', align: 'center', width: 100, rowspan: 2 },
+                { title: '内容', field: 'content', align: 'center', width: 90, rowspan: 2 },
+                { title: '分类', field: 'categoryName', align: 'center', width: 90, rowspan: 2 },
+                { title: '创建时间', field: 'createTime', align: 'center', sortable: true, width: 130, rowspan: 2 },
+                { title: '修改时间', field: 'updateTime', align: 'center', sortable: true, width: 130, rowspan: 2 },
+                { title: '作者', colspan: 2 }
+            ],
+            [
+                { field: 'userAvatar', align: 'center', width: 40, formatter: function(val, row, index) { return imageFormatter(val, row, index) } },
+                { field: 'userNickName', align: 'center', width: 100 }
+            ]
+        ],
+        onLoadSuccess: function() {
+            $('img').eq(0).load(function() { { $datagrid.datagrid('fixRowHeight'); }
+            });
+        }
+    })
+
+    function imageFormatter(val, row, index) {
+        // console.log(val)
+        if (val === null) {
+            val = ''
+        }
+        return '<img src="' + val + '" alt="头像" >';
+    }
+
+    function doDelete() {
+        $.messager.confirm('删除', '确定要删除？', function(comfirm) {
+            if (comfirm) {
+                var rows = $datagrid.datagrid('getSelections');
+                var deleteTimes = rows.length;
+                for (var index in rows) {
+                    $._ajax({
+                        url: "/api/article/deleteArticle",
+                        data: { articleId: rows[index].articleId },
+                        success: function(data) {
+                            deleteTimes--;
+                            if (deleteTimes === 0) {
+                                $datagrid.datagrid('reload');
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+    function doSearch() {
+        $datagrid.datagrid('load', {
+            keyword: $('[name="keyword"]').val(),
+            access_token: $.getCache({ key: 'loginInfo' }).access_token
+        });
+    }
+    </script>
+</body>
+
+</html>

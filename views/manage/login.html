@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>后台登录</title>
+    <link rel="stylesheet" type="text/css" href="/stylesheets/reset.css">
+    <link rel="stylesheet" type="text/css" href="/easyUI/themes/bootstrap/easyui.css">
+    <link rel="stylesheet" type="text/css" href="/easyUI/themes/icon.css">
+    <script type="text/javascript" src="/javascripts/jquery.min.js"></script>
+    <script type="text/javascript" src="/javascripts/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="/javascripts/default.js"></script>
+</head>
+
+<body>
+    <div class="easyui-panel" title="请登录">
+        <div>
+            <form id="login-form" method="post">
+                <table cellpadding="5">
+                    <tr>
+                        <td>账号:</td>
+                        <td><input class="easyui-textbox" type="text" name="username" data-options="required:true"></input></td>
+                    </tr>
+                    <tr>
+                        <td>密码:</td>
+                        <td><input class="easyui-textbox" type="password" name="password" data-options="required:true"></input></td>
+                    </tr>
+                </table>
+            </form>
+            <div>
+                <a href="javascript:void(0)" class="easyui-linkbutton" onclick="doSubmit()">登录</a>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+    var loginInfo = $.getCache({ key: 'loginInfo' })
+    if (loginInfo) {
+        window.location.href = '/manage/index'
+    }
+
+    function doSubmit() {
+        var username = $('input[name=username]').val()
+        var password = $('input[name=password]').val()
+        $.ajax({
+            type: 'post',
+            url: '/api/users/login',
+            data: {
+                username: username,
+                password: password,
+            },
+            success: function(res) {
+                if (res.status === 1) {
+                    $.setCache({ key: 'loginInfo', value: res.result })
+                    window.location.href = '/manage/index'
+                }
+            }
+        })
+    }
+    </script>
+</body>
+
+</html>

@@ -1,11 +1,21 @@
-body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-}
 
 a {
   color: #00B7FF;
 }
+iframe{
+	display: block;
+}
 [field='userAvatar'] img{
-	width: 100px;
+	display: block;
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+}
+.button-row{
+	height: 50px;
+box-sizing: border-box;
+	padding:12px;
+}
+.button-row{
+	
 }

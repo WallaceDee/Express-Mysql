@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="/stylesheets/reset.css">
+    <link rel="stylesheet" type="text/css" href="/easyUI/themes/bootstrap/easyui.css">
+    <link rel="stylesheet" type="text/css" href="/easyUI/themes/icon.css">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/style.css">
+    <script type="text/javascript" src="/javascripts/jquery.min.js"></script>
+    <script type="text/javascript" src="/javascripts/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="/javascripts/default.js"></script>
+</head>
+
+<body>
+    <table id="datagrid">
+    </table>
+    <div id="toolbar">
+        <p> <input name="keyword" placeholder="用户名、昵称、电话">
+            <a class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="doSearch()">搜索</a>
+            <a class="easyui-linkbutton" data-options="iconCls:'icon-save'" onclick="confirmChanges()">保存修改</a>
+            <a class="easyui-linkbutton" data-options="iconCls:'icon-undo'" onclick="rejectChanges()">撤销修改</a>
+            <a class="easyui-linkbutton" data-options="iconCls:'icon-remove'" onclick="doDelete()">删除</a>
+        </p>
+        <p>
+    </div>
+    <div id="window" class="easyui-window" title="确认修改内容" data-options="modal:true,closed:true,iconCls:'icon-save',collapsible:false" style="width:600px;height:300px;">
+        <table id="preview-datagrid" style="height: 210px;">
+        </table>
+        <div class="button-row"> <a onclick="acceptChanges()" class="easyui-linkbutton" data-options="iconCls:'icon-ok'">确认</a><a onclick="closeWindow()" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'">取消</a></div>
+    </div>
+    <script type="text/javascript">
+    var $datagrid = $('#datagrid')
+    var $window = $("#window");
+    $datagrid.datagrid({
+        fit: true,
+        toolbar: '#toolbar',
+        url: '/api/users/list',
+        method: 'post',
+        queryParams: { access_token: $.getCache({ key: 'loginInfo' }).access_token },
+        pagination: true,
+        remoteSort: false,
+        columns: [
+            [{ field: 'ck', checkbox: true },
+                { title: 'ID', field: 'userId' },
+                { title: '用户名', field: 'userName', align: 'center', editor: 'text', width: 100 },
+                { title: '昵称', field: 'userNickName', align: 'center', editor: 'text', width: 100 },
+                { title: '头像', field: 'userAvatar', align: 'center', width: 100, formatter: function(val, row, index) { return imageFormatter(val, row, index) } },
+                { title: '电话', field: 'userPhone', align: 'center', width: 90, editor: 'text' },
+                { title: '生日', field: 'userBirthday', align: 'center', width: 90, editor: 'text' },
+                { title: '性别', field: 'userGender', align: 'center', width: 50, editor: { type: 'combobox', options: { valueField: 'value', textField: 'label', data: [{ label: '保密', value: 'n' }, { label: '男', value: 'm' }, { label: '女', value: 'f' }] } }, formatter: function(val, row, index) { return genderFormatter(val, row, index) } },
+                { title: '创建时间', field: 'createTime', align: 'center', sortable: true, width: 130 },
+                { title: '修改时间', field: 'updateTime', align: 'center', sortable: true, width: 130 }
+            ]
+        ],
+        onLoadSuccess: function() {
+            $('img').eq(0).load(function() { { $datagrid.datagrid('fixRowHeight'); }
+            });
+        }
+    }).datagrid('enableCellEditing');
+
+    function genderFormatter(val, row, index) {
+        var gender = "保密";
+        if (val === 'm') {
+            gender = "男"
+        } else if (val === 'f') {
+            gender = "女"
+        }
+        return gender;
+    }
+
+    function imageFormatter(val, row, index) {
+        return '<img src="' + val + '" alt="" >';
+    }
+
+    function getEditingRowIndex() {
+        var tr = $(".datagrid-row.datagrid-row-editing");
+        return parseInt(tr.attr('datagrid-row-index'));
+    }
+
+    function getCurrRowIndex() {
+        var tr = $("[name='ck']:checked").closest('tr.datagrid-row');
+        return parseInt(tr.attr('datagrid-row-index'));
+    }
+
+    function closeWindow() {
+        $window.window('close');
+    }
+
+    function doDelete() {
+        $.messager.confirm('删除', '确定要删除？', function(comfirm) {
+            if (comfirm) {
+                var rows = $datagrid.datagrid('getSelections');
+                var deleteTimes = rows.length;
+                for (var index in rows) {
+                    $._ajax({
+                        url: "/api/users/deleteUser",
+                        data: { userId: rows[index].userId },
+                        success: function(data) {
+                            deleteTimes--;
+                            if (deleteTimes === 0) {
+                                $datagrid.datagrid('reload');
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+    function doSearch() {
+        $datagrid.datagrid('load', {
+            keyword: $('[name="keyword"]').val()
+        });
+    }
+
+    function confirmChanges() {
+        $datagrid.datagrid('endEdit', getEditingRowIndex());
+        var rows = $datagrid.datagrid('getChanges');
+        if (rows.length > 0) {
+            var data = { rows: rows, total: rows.length };
+            $("#preview-datagrid").datagrid({
+                columns: [
+                    [
+                        { title: 'ID', field: 'userId' },
+                        { title: '用户名', field: 'userName', align: 'center', editor: 'text', width: 100 },
+                        { title: '昵称', field: 'userNickName', align: 'center', editor: 'text', width: 100 },
+                        { title: '头像', field: 'userAvatar', align: 'center', width: 100, formatter: function(val, row, index) { return imageFormatter(val, row, index) } },
+                        { title: '电话', field: 'userPhone', align: 'center', width: 90, editor: 'text' },
+                        { title: '生日', field: 'userBirthday', align: 'center', width: 90, editor: 'text' },
+                        { title: '性别', field: 'userGender', align: 'center', width: 50, editor: { type: 'combobox', options: { valueField: 'value', textField: 'label', data: [{ label: '保密', value: 'n' }, { label: '男', value: 'm' }, { label: '女', value: 'f' }] } }, formatter: function(val, row, index) { return genderFormatter(val, row, index) } }
+                    ]
+                ]
+            });
+            $("#preview-datagrid").datagrid("loadData", data);
+            $window.window('open');
+        } else {
+            $.messager.alert('提示', '您还没做任何修改！', 'info');
+        }
+    }
+
+    function acceptChanges() {
+        var rows = $datagrid.datagrid('getChanges');
+        var updateTimes = rows.length;
+        for (var index in rows) {
+            $._ajax({
+                url: "/api/users/updateUser",
+                data: rows[index],
+                success: function(data) {
+                    updateTimes--;
+                    if (updateTimes === 0) {
+                        $datagrid.datagrid('reload');
+                        $window.window('close');
+                    }
+                }
+            });
+        }
+    }
+
+    function rejectChanges() {
+        $datagrid.datagrid('rejectChanges');
+    }
+    </script>
+</body>
+
+</html>

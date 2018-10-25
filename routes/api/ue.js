@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var path = require('path');
-var ueditor = require("../lib/ueditor")
+var ueditor = require("../../lib/ueditor")
 
 // /ueditor 入口地址配置 https://github.com/netpi/ueditor/blob/master/example/public/ueditor/ueditor.config.js
 // 官方例子是这样的 serverUrl: URL + "php/controller.php"

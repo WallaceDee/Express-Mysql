@@ -2,7 +2,7 @@ var user = {
     insert: 'INSERT INTO table_user(userName,userNickName,userPassword,createTime,updateTime) VALUES(?,?,?,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP)',
     delete: 'DELETE FROM table_user WHERE userId=?',
     update: 'UPDATE table_user SET userName=?,userAvatar=? ,userPhone=? ,userGender=?,updateTime=CURRENT_TIMESTAMP WHERE userId=?',
-    list: 'SELECT * FROM table_user WHERE userName LIKE CONCAT("%",?,"%") AND userPhone LIKE CONCAT("%",?,"%") LIMIT ?,?',
+    list: 'SELECT userId,userName,userNickName,userAvatar,userBirthday,userPhone,userGender,createTime,updateTime FROM table_user WHERE userName LIKE CONCAT("%",?,"%") OR userNickName LIKE CONCAT("%",?,"%") OR userPhone LIKE CONCAT("%",?,"%") LIMIT ?,?',
     count: 'SELECT COUNT(*) FROM table_user WHERE userName LIKE CONCAT("%",?,"%") AND userPhone LIKE CONCAT("%",?,"%")',
     login: 'SELECT * FROM table_user WHERE userName=? AND userPassword =?',
     getUserInfo: 'SELECT * FROM table_user WHERE userName=?',

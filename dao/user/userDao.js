@@ -21,13 +21,13 @@ module.exports = {
     },
     list: (req, res) => {
         //query: 'SELECT * FROM table_user WHERE userName LIKE "%?%" OR userPhone LIKE "%?%"',
-        let query = $util.extend(req.query, {
-            userName: "",
-            userPhone: ""
+        let query = $util.extend(req.body, {
+            keyword: ''
         }); //get
         let params = [];
-        params.push(query.userName)
-        params.push(query.userPhone)
+        params.push(query.keyword)
+        params.push(query.keyword)
+        params.push(query.keyword)
         params.push(query.rows * 1 * (query.page - 1))
         params.push(query.rows * 1)
         let total = 0
@@ -60,28 +60,16 @@ module.exports = {
         //  delete: 'DELETE FROM table_user WHERE userId=?',
         var query = req.body;
         var params = [query.userId];
-        $db.executeSql($sql.delete, params, function(err, result) {
-            if (result) {
-                result = {
-                    code: 200,
-                    msg: '删除成功'
-                };
-            }
-            $util.print(res, result);
+        $db.executeSql($sql.delete, params, function(error, result) {
+            $util.print(res, error, { message: '删除成功' })
         });
     },
     update: function(req, res) {
         // update: 'UPDATE table_user SET userName=?,userAvatar=? ,userPhone=? ,userGender=?,updateTime=CURRENT_TIMESTAMP WHERE userId=?',
         var query = req.body;
         var params = [query.userName, query.userAvatar, query.userPhone, query.userGender, query.userId];
-        $db.executeSql($sql.update, params, function(err, result) {
-            if (result) {
-                result = {
-                    code: 200,
-                    msg: '修改成功'
-                };
-            }
-            $util.print(res, result);
+        $db.executeSql($sql.update, params, function(error, result) {
+            $util.print(res, error, { message: '修改成功' })
         });
     },
     login: function(req, res) {

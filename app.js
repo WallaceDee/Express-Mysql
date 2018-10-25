@@ -8,9 +8,9 @@ var session = require('express-session');
 
 
 var users = require('./routes/api/users');
-var login = require('./routes/login');
-var ue = require('./routes/ue');
-var article = require('./routes/article');
+var login = require('./routes/api/login');
+var ue = require('./routes/api/ue');
+var article = require('./routes/api/article');
 var manage = require('./routes/manage');
 var app = express();
 

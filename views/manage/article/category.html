@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="/stylesheets/reset.css">
+    <link rel="stylesheet" type="text/css" href="/easyUI/themes/bootstrap/easyui.css">
+    <link rel="stylesheet" type="text/css" href="/easyUI/themes/icon.css">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/style.css">
+    <script type="text/javascript" src="/javascripts/jquery.min.js"></script>
+    <script type="text/javascript" src="/javascripts/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="/javascripts/default.js"></script>
+</head>
+
+<body>
+    <div class="easyui-panel">
+        <div class="button-row">
+            <a class="easyui-linkbutton" onclick="doSubmit()">添加节点</a>
+            <a class="easyui-linkbutton" onclick="doDelete()">删除节点</a>
+            <a class="easyui-linkbutton" onclick="setToTop()">置顶</a>
+        </div>
+        <ul class="tree"></ul>
+    </div>
+    <script type="text/javascript">
+    var $tree = $(".tree")
+    $tree.tree({
+        url: '/api/article/getCategoryList',
+        method: 'post',
+        dnd: true,
+        queryParams: { access_token: $.getCache({ key: 'loginInfo' }).access_token },
+        onDblClick: function(node) {
+            $(this).tree('beginEdit', node.target);
+        },
+        onAfterEdit: function(node) {
+            console.log(node)
+            updateCategoryName(node.text, node.categoryId)
+        },
+        onDrop: function(target, source, point) {
+            console.log(point, source)
+            var targetNode = $tree.tree('getData', target)
+            var categoryId = source.categoryId
+            var parentId = 0
+            if (point === 'append') {
+                parentId = targetNode.categoryId
+            } else {
+                parentId = targetNode.parentId
+                console.log(targetNode.sortIndex)
+            }
+            updateCategoryParentId(categoryId, parentId)
+        }
+    })
+
+    function getSelected() {
+        var node = $tree.tree('getSelected');
+        if (node) {
+            console.log(node)
+            return node
+        } else {
+            return null
+        }
+    }
+
+    function doSubmit() {
+        var parentNode = getSelected()
+        if (!parentNode) {
+            parentNode = $tree.tree('getRoots')[0]
+        }
+        $.messager.prompt('创建节点', '在' + parentNode.text + '下创建节点，请输入节点名', function(value) {
+            if (value) {
+                $._ajax({
+                    url: '/api/article/createCategory',
+                    data: {
+                        categoryName: value,
+                        parentId: parentNode.categoryId
+                    },
+                    success: function(res) {
+                        var msg
+                        if (res.status === 1) {
+                            $tree.tree('reload');
+                            msg = '创建成功'
+                        } else {
+                            msg = res.result.message
+                        }
+                        $.messager.show({
+                            title: '提示',
+                            msg: msg,
+                            showType: 'slide'
+                        });
+                    }
+                })
+            }
+        });
+    }
+
+    function doDelete() {
+        var node = getSelected()
+        if (node) {
+            $._ajax({
+                url: '/api/article/deleteCategory',
+                data: {
+                    categoryId: node.categoryId
+                },
+                success: function(res) {
+                    var msg
+                    if (res.status === 1) {
+                        $tree.tree('reload');
+                        msg = '删除成功'
+                    } else {
+                        msg = res.result.message
+                    }
+                    $.messager.show({
+                        title: '提示',
+                        msg: msg,
+                        showType: 'slide'
+                    });
+                }
+            })
+        }
+    }
+
+    function updateCategoryParentId(categoryId, parentId) {
+        $._ajax({
+            url: '/api/article/updateCategoryParentId',
+            data: {
+                categoryId: categoryId,
+                parentId: parentId
+            },
+            success: function(res) {
+                var msg
+                if (res.status === 1) {
+                    $tree.tree('reload');
+                    msg = '修改成功'
+                } else {
+                    msg = res.result.message
+                }
+                $.messager.show({
+                    title: '提示',
+                    msg: msg,
+                    showType: 'slide'
+                });
+            }
+        })
+    }
+
+    function setToTop() {
+        var node = getSelected()
+        if (node) {
+            $._ajax({
+                url: '/api/article/setCategoryToTop',
+                data: {
+                    categoryId: node.categoryId
+                },
+                success: function(res) {
+                    var msg
+                    if (res.status === 1) {
+                        $tree.tree('reload');
+                        msg = '置顶成功'
+                    } else {
+                        msg = res.result.message
+                    }
+                    $.messager.show({
+                        title: '提示',
+                        msg: msg,
+                        showType: 'slide'
+                    });
+                }
+            })
+        }
+    }
+
+    function updateCategoryName(categoryName, categoryId) {
+        $._ajax({
+            url: '/api/article/updateCategoryName',
+            data: {
+                categoryName: categoryName,
+                categoryId: categoryId
+            },
+            success: function(res) {
+                var msg
+                if (res.status === 1) {
+                    $tree.tree('reload');
+                    msg = '修改成功'
+                } else {
+                    msg = res.result.message
+                }
+                $.messager.show({
+                    title: '提示',
+                    msg: msg,
+                    showType: 'slide'
+                });
+            }
+        })
+    }
+    </script>
+</body>
+
+</html>

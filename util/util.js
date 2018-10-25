@@ -8,7 +8,7 @@ let cert = fs.readFileSync('config/public.key'); // get private key
 module.exports = {
     ensureAuthorized: function(req, res, next) {
         //检查post的信息或者url查询参数或者头信息
-        var access_token = req.headers['access_token'];
+        var access_token = req.headers['access_token']||req.body['access_token'];
         // 解析 token
         if (access_token) {
             // 确认token
@@ -19,7 +19,7 @@ module.exports = {
                 } else {
                     // 如果没问题就把解码后的信息保存到请求中，供后面的路由使用
                     req.userInfo = decoded;
-                    console.dir(req.userInfo);
+                    // console.dir(req.userInfo);
                     next();
                 }
             });
