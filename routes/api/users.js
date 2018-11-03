@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var userDao = require('../../dao/user/userDao');
+var userDao = require('../../dao/user/index');
 var util = require('../../util/util.js')
 /* GET users listing. */
 router.get('/', function(req, res, next) {

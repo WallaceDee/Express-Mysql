@@ -4,13 +4,12 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var session = require('express-session');
-
 
 var users = require('./routes/api/users');
 var login = require('./routes/api/login');
 var ue = require('./routes/api/ue');
 var article = require('./routes/api/article');
+var comment = require('./routes/api/comment');
 var manage = require('./routes/manage');
 var app = express();
 
@@ -37,7 +36,11 @@ app.use('/api/ue', ue);
 app.use('/api/users', users);
 app.use('/api/login', login);
 app.use('/api/article', article);
+app.use('/api/comment', comment);
 
+app.get('/index', function(req, res) {
+    res.render('index.html');
+});
 app.get('/', function(req, res) {
     res.render('index.html');
 });

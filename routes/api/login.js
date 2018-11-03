@@ -5,11 +5,20 @@ let $util = require('../../util/util');
 
 router.post('/getWeiboAccessToken', function(req, res, next) {
     var sinaoauth2 = new sinaOAuth2();
-    sinaoauth2.getAccessToken(req, res);
+    sinaoauth2.getAccessTokenWithWeibo(req, res);
 });
 router.post('/loginByWeibo', function(req, res, next) {
     var sinaoauth2 = new sinaOAuth2();
-    sinaoauth2.login(req, res);
+    sinaoauth2.loginWithWeibo(req, res);
+});
+
+router.post('/getQQAccessToken', function(req, res, next) {
+    var sinaoauth2 = new sinaOAuth2();
+    sinaoauth2.getAccessTokenWithQQ(req, res);
+});
+router.post('/loginByQQ', function(req, res, next) {
+    var sinaoauth2 = new sinaOAuth2();
+    sinaoauth2.loginWithQQ(req, res);
 });
 
 module.exports = router;

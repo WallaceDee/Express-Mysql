@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <title>Document</title>
     <link rel="stylesheet" type="text/css" href="/stylesheets/reset.css">
-    <link rel="stylesheet" type="text/css" href="/easyUI/themes/bootstrap/easyui.css">
+    <link rel="stylesheet" type="text/css" href="/easyUI/themes/material/easyui.css">
     <link rel="stylesheet" type="text/css" href="/easyUI/themes/icon.css">
     <link rel="stylesheet" type="text/css" href="/stylesheets/style.css">
     <script type="text/javascript" src="/javascripts/jquery.min.js"></script>
@@ -43,11 +43,11 @@
             [{ field: 'ck', checkbox: true, rowspan: 2 },
                 { title: 'ID', field: 'articleId', rowspan: 2 },
                 { title: '标题', field: 'title', align: 'center', width: 100, rowspan: 2 },
-                { title: '内容', field: 'content', align: 'center', width: 90, rowspan: 2 },
+                { title: '内容', field: 'content', align: 'center', width: 300, rowspan: 2 },
+                { title: '作者', colspan: 2 },
                 { title: '分类', field: 'categoryName', align: 'center', width: 90, rowspan: 2 },
                 { title: '创建时间', field: 'createTime', align: 'center', sortable: true, width: 130, rowspan: 2 },
-                { title: '修改时间', field: 'updateTime', align: 'center', sortable: true, width: 130, rowspan: 2 },
-                { title: '作者', colspan: 2 }
+                { title: '修改时间', field: 'updateTime', align: 'center', sortable: true, width: 130, rowspan: 2 }
             ],
             [
                 { field: 'userAvatar', align: 'center', width: 40, formatter: function(val, row, index) { return imageFormatter(val, row, index) } },
@@ -92,7 +92,7 @@
     function doSearch() {
         $datagrid.datagrid('load', {
             keyword: $('[name="keyword"]').val(),
-            access_token: $.getCache({ key: 'loginInfo' }).access_token
+            access_token: window.access_token
         });
     }
     </script>

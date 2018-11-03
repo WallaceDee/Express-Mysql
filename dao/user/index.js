@@ -2,7 +2,7 @@
 // 实现与MySQL交互
 let $db = require('../../config/db');
 let $util = require('../../util/util');
-let $sql = require('./userSqlMapping');
+let $sql = require('./sqlMapping');
 let uuid = require('uuid');
 let jwt = require('jsonwebtoken');
 let fs = require("fs");
@@ -20,92 +20,74 @@ module.exports = {
         })
     },
     list: (req, res) => {
-        //query: 'SELECT * FROM table_user WHERE userName LIKE "%?%" OR userPhone LIKE "%?%"',
+        // 'SET @keyword=?;
+        //SELECT userId,userName,userNickName,userAvatar,userBirthday,userPhone,userGender,createTime,updateTime FROM table_user WHERE userName LIKE CONCAT("%",@keyword,"%") OR userNickName LIKE CONCAT("%",@keyword,"%") OR userPhone LIKE CONCAT("%",@keyword,"%") LIMIT ?,?;
+        //SELECT COUNT(*) FROM table_user WHERE userName LIKE CONCAT("%",@keyword,"%") OR userNickName LIKE CONCAT("%",@keyword,"%") OR userPhone LIKE CONCAT("%",@keyword,"%");',
         let query = $util.extend(req.body, {
-            keyword: ''
-        }); //get
-        let params = [];
-        params.push(query.keyword)
-        params.push(query.keyword)
+                keyword: ''
+            }),
+            total = 0,
+            rows = [],
+            params = []
         params.push(query.keyword)
         params.push(query.rows * 1 * (query.page - 1))
         params.push(query.rows * 1)
-        let total = 0
-        let rows = []
-        $db.executeSql($sql.count, params, (err, result) => {
-            total = result[0]['COUNT(*)']
-            $db.executeSql($sql.list, params, (err, result) => {
-                rows = result
+        $db.executeSql($sql.list, params, (error, result) => {
+            if (error) {
+                res.json(error)
+            } else {
+                rows = result[1]
+                total = result[2][0]['COUNT(*)']
                 res.json({ total: total, rows: rows })
-            });
+            }
         });
     },
-    register: function(req, res) {
+    register: (req, res) => {
         //  insert: 'INSERT INTO table_user(userName,userPassword,createTime,updateTime) VALUES(?,?,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP)',
-        var query = req.body
-        var name = ""
-        for (var i = 0; i < 4; i++) {
+        let query = req.body
+        let name = ''
+        for (let i = 0; i < 4; i++) {
             name += '\\u' + (Math.round(Math.random() * 20901) + 19968).toString(16)
         }
         name = unescape(name.replace(/\\u/g, '%u'))
-        let password = query.password
         let md5 = crypto.createHash("md5")
-        password = md5.update(password).digest("hex")
-        var params = [query.username, name, password]
+        let password = md5.update(query.password).digest("hex")
+        let params = [query.username, name, password]
         $db.executeSql($sql.insert, params, function(error, result) {
             $util.print(res, error, { message: '注册成功' })
         });
     },
-    delete: function(req, res) {
+    delete: (req, res) => {
         //  delete: 'DELETE FROM table_user WHERE userId=?',
-        var query = req.body;
-        var params = [query.userId];
+        let params = [req.body.userId];
         $db.executeSql($sql.delete, params, function(error, result) {
             $util.print(res, error, { message: '删除成功' })
         });
     },
-    update: function(req, res) {
-        // update: 'UPDATE table_user SET userName=?,userAvatar=? ,userPhone=? ,userGender=?,updateTime=CURRENT_TIMESTAMP WHERE userId=?',
-        var query = req.body;
-        var params = [query.userName, query.userAvatar, query.userPhone, query.userGender, query.userId];
+    update: (req, res) => {
+        // update: 'UPDATE table_user SET userNickName=?,userAvatar=? ,userPhone=? ,userGender=?,updateTime=CURRENT_TIMESTAMP WHERE userId=?'
+        let query = req.body;
+        let params = [query.userNickName, query.userAvatar, query.userPhone, query.userGender, query.userId];
         $db.executeSql($sql.update, params, function(error, result) {
+            console.log(error)
+            console.log(result)
             $util.print(res, error, { message: '修改成功' })
         });
     },
-    login: function(req, res) {
+    login: (req, res) => {
         let query = req.body
-        let password = query.password
         let md5 = crypto.createHash("md5")
-        password = md5.update(password).digest("hex")
+        let password = md5.update(query.password).digest("hex")
         let params = [query.username, password]
-        console.log(password)
         $db.executeSql($sql.login, params, function(error, result) {
-
             if (result.length === 1) {
-                let access_token = jwt.sign({ userName: result[0].userName, userId: result[0].userId }, cert, { expiresIn: "2h", algorithm: 'RS256' });
+                let access_token = jwt.sign({ userName: result[0].userName, userId: result[0].userId }, cert, { expiresIn: "2h", algorithm: 'RS256' })
                 result[0].access_token = access_token
-
                 $util.print(res, error, result[0])
             } else {
                 $util.print(res, { message: '用户名或密码错误' }, { message: '用户名或密码错误' })
             }
         })
-    },
-    getUserInfo: function(req, res) {
-        var query = req.body;
-        var params = [query.token, query.userName];
-        $util.checkToken(params[0], params[1], res, function() {
-            $db.executeSql($sql.getUserInfo, params[1], function(err, result) {
-                console.log(result);
-                if (result) {
-                    result = {
-                        code: 200,
-                        info: result[0]
-                    };
-                }
-                $util.print(res, result);
-            });
-        });
     },
     modify: function(req, res) {
         var query = req.body;

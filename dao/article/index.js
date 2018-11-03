@@ -2,7 +2,7 @@
 // 实现与MySQL交互
 let $db = require('../../config/db');
 let $util = require('../../util/util');
-let $sql = require('./articleSqlMapping');
+let $sql = require('./sqlMapping');
 
 module.exports = {
     list: (req, res) => {
@@ -33,6 +33,12 @@ module.exports = {
         var query = req.body
         $db.executeSql($sql.deleteArticle, [query.articleId], function(error, result) {
             $util.print(res, error, { message: '删除成功' })
+        });
+    },
+    getArticleDetail: (req, res) => {
+        var query = req.body
+        $db.executeSql($sql.getArticleDetail, [query.articleId], function(error, result) {
+            $util.print(res, error,result[0])
         });
     },
     getArticleByCategoryId: (req, res) => {

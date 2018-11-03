@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var util = require('../../util/util.js')
-var articleDao = require('../../dao/article/articleDao');
+var articleDao = require('../../dao/article/index');
 
 /* GET home page. */
 router.post('/list', util.ensureAuthorized, (req, res, next) => {
@@ -41,6 +41,10 @@ router.post('/deleteArticle', util.ensureAuthorized, function(req, res, next) {
 
 router.post('/getArticleByCategoryId', util.ensureAuthorized, function(req, res, next) {
     articleDao.getArticleByCategoryId(req, res, next)
+});
+
+router.post('/getArticleDetail', function(req, res, next) {
+    articleDao.getArticleDetail(req, res, next)
 });
 
 module.exports = router;

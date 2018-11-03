@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <title>Document</title>
     <link rel="stylesheet" type="text/css" href="/stylesheets/reset.css">
-    <link rel="stylesheet" type="text/css" href="/easyUI/themes/bootstrap/easyui.css">
+    <link rel="stylesheet" type="text/css" href="/easyUI/themes/material/easyui.css">
     <link rel="stylesheet" type="text/css" href="/easyUI/themes/icon.css">
     <link rel="stylesheet" type="text/css" href="/stylesheets/style.css">
     <script type="text/javascript" src="/javascripts/jquery.min.js"></script>
@@ -14,14 +14,13 @@
 </head>
 
 <body>
-    <div class="easyui-panel">
+
         <div class="button-row">
             <a class="easyui-linkbutton" onclick="doSubmit()">添加节点</a>
             <a class="easyui-linkbutton" onclick="doDelete()">删除节点</a>
             <a class="easyui-linkbutton" onclick="setToTop()">置顶</a>
         </div>
         <ul class="tree"></ul>
-    </div>
     <script type="text/javascript">
     var $tree = $(".tree")
     $tree.tree({
