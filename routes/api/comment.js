@@ -11,5 +11,9 @@ router.post('/addComment', util.ensureAuthorized, (req, res, next) => {
     commentDao.addComment(req, res, next)
 });
 
+router.post('/addCommentAnonymous', (req, res, next) => {
+    commentDao.addCommentAnonymous(req, res, next)
+});
+
 
 module.exports = router

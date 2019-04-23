@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>陈国华&冼楚兴我们结婚啦！</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=no" />
+    <link rel=stylesheet href=https://at.alicdn.com/t/font_636935_lbfjw1ihf8o20529.css> <link rel="stylesheet" href="scene/css/swiper-3.4.2.min.css">
+    <!--<link rel="stylesheet" href="/scene/css/magic.min.css?t=3">-->
+    <!--<link rel="stylesheet" href="/scene/css/yaoyueElementEffect.v1.css">-->
+    <link rel="stylesheet" href="scene/css/animatezz.css">
+    <link rel="stylesheet" href="scene/css/magiczz.css">
+    <link rel="stylesheet" href="scene/css/swiper.min.css">
+    <link rel="stylesheet" href="scene/css/style.css?t=2">
+    <!--<link rel="stylesheet" href="/scene/js/layui/css/layui.css">-->
+    <style>
+        .map img {
+        width: 50%;
+        float: left;
+    }
+
+    .comment-wrapper {
+        height: 100%;
+        /*background-image: url(https://res.zhangu365.com/syspic/img/f2d3346c682f51daeda783e98f23fb3d.png?x-oss-process=image/resize,w_700);*/
+        background-size: cover;
+    }
+
+    .comment-wrapper h1 {
+        font-family: guiqi;
+        background-image: url(https://res.zhangu365.com/syspic/img/2624c26aeb52241ff2aac4335e97d012.png?x-oss-process=image/resize,w_300);
+
+        background-repeat: no-repeat;
+
+        text-align: center;
+        font-size: 28px;
+        color: rgb(104, 60, 55);
+    margin-top: 10px;
+    padding-bottom: 25px;
+        box-sizing: content-box;
+        background-size: 50%;
+        background-position: center bottom;
+    }
+
+    .comment-wrapper .content {
+        height: 100%;
+        /*background-image: url(https://res.zhangu365.com/syspic/img/3f959551c33629037d6d35a07b20d8a4.png?x-oss-process=image/resize,w_700);*/
+        background-size: cover;
+
+    }
+
+    .list-block {
+        /*        height: calc(100% - 200px);*/
+        font-family: guiqi;
+
+        font-size: 16px;
+        margin: 0;
+    }
+
+    .list-block ul:before{
+    display: none
+    }
+    .item-title-row span {
+        color: #999;
+        font-size: 12px;
+        float: right;
+    }
+
+    .button-wrapper {
+        display: flex;
+        padding: 0 10px;
+        height: 40px;
+        line-height: 40px;
+    }
+
+    .button-wrapper a {
+        display: block;
+        width: 50%;
+        text-align: center;
+        font-size: 16px;
+        margin-right: 10px;
+        margin-left: 10px;
+        font-family: guiqi;
+    }
+
+    .all-comment {
+        position: absolute;
+        z-index: 2;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background: #ffffff;
+    }
+
+    .all-comment .list-block {
+        height: calc(100% - 40px);
+        overflow: auto;
+    }
+
+    .all-comment .list-block {
+        margin: 0;
+    }
+
+    .loadmore {
+        text-align: center;
+        height: 40px;
+        line-height: 40px;
+    }
+
+    .textareaPopup {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        z-index: 3;
+        top: 0;
+        background-color: rgba(0, 0, 0, .3);
+        left: 0;
+        opacity: 0;
+    }
+
+    .textareaPopup h1 {
+        font-family: guiqi;
+        text-align: center;
+        height: 40px;
+        line-height: 40px;
+    }
+
+    .textareaPopup .content {
+        background-color: #fff;
+        width: 80%;
+        padding: 0 20px 0 20px;
+        position: relative;
+        margin: 0 auto;
+        top: 50%;
+        transform: translateY(-50%);
+        border-radius: 10px;
+    }
+
+    .textareaPopup .content textarea {
+        font-family: guiqi;
+        border: 1px dashed #999;
+        resize: none;
+        width: 100%;
+        padding: 5px;
+        height: 90px;
+    }
+
+    .three-part {
+        margin-left: 10px;
+    }
+
+    .three-part a {
+        float: left;
+        margin-right: 10px;
+    }
+
+    .three-part span.qq {
+        display: block;
+        width: 30px;
+        height: 30px;
+        background-image: url(http://www.chenguohua.com.cn/images/qq.png);
+        background-size: cover;
+        background-color: #dbdbdb;
+        border-radius: 50%;
+    }
+
+    .three-part span.weibo {
+        display: block;
+        width: 30px;
+        height: 30px;
+        background-image: url(http://www.chenguohua.com.cn/images/sina.png);
+        background-size: cover;
+        background-color: #dbdbdb;
+        border-radius: 50%;
+    }
+
+    .three-part span.anonymous {
+        display: block;
+        width: 30px;
+        height: 30px;
+        /*background-image: url(http://www.chenguohua.com.cn/images/sina.png);*/
+        background-size: cover;
+        background-color: #dbdbdb;
+        border-radius: 50%;
+        line-height: 30px;
+        text-align: center;
+        font-size: 12px;color:#fff;
+    }
+
+    .avatar-wrapper {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
+    .avatar-wrapper>span {
+        display: block;
+        width: 30px;
+        margin-right: 5px;
+        height: 30px;
+        background-color: #eee;
+        border-radius: 50%;
+        background-size: cover;
+        background-position: center;
+    }
+
+    .list-block {
+        -webkit-overflow-scrolling: touch
+    }
+
+    .list-block .item-text {
+        height: auto;
+        -webkit-line-clamp: 5;
+        font-size: 13px;
+    }
+
+    .hidden {
+        opacity: 0;
+    }
+
+    .display {
+        opacity: 1 !important;
+    }
+
+ .swiper-slide10    a ,.all-comment a,.textareaPopup a{
+        color: rgb(104, 60, 55) !important;
+    }
+    .anonymousName{
+        font-family: guiqi;
+    border: 1px dashed #999!important;
+margin-bottom: 5px!important;
+    width: 100%;
+    padding: 5px!important;
+    }
+    .comment-wrap::-webkit-scrollbar {
+  display: none;
+}
+    .comment-wrap{
+    margin-left: 0.75rem;    height: calc(100% - 128px);  overflow: auto;
+    margin-right: 0.75rem;margin-top: 10px;margin-bottom: 10px;
+    border-radius: 0.35rem;box-shadow: 0 0.1rem 0.2rem rgba(0, 0, 0, 0.3);
+      -webkit-overflow-scrolling: touch;
+}
+ .comment-wrap ul{
+        border-top-left-radius: 0.35rem;
+border-top-right-radius: 0.35rem;
+ }
+   .comment-wrap ul li:first-child{
+border-top-left-radius: 0.35rem;
+border-top-right-radius: 0.35rem;
+   }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <div class="audio_btn" v-show="!rightbody" @click="playOrPauseMusic" :class="isplay ? 'play': ''">
+            <img :style="showaudioImg()" src='scene/images/musicico.png'>
+        </div>
+        <audio v-show="!rightbody" id="sceneaudio" :src="showimg('https://res.zhangu365.com/fodder/user/music/2018/1104/321e06d947499470f40bfd8dc6044afe.mp3')" autoplay="autoplay" loop="loop"></audio>
+        <!--     <transition name="fade">
+        <sys-logo v-if="rightbody" :logimg="logimg"></sys-logo>
+    </transition> -->
+        <div class="swiper-container">
+            <transition name="fade">
+                <div class="swiper-wrapper" v-show="!rightbody">
+                    <my-page :page="page" :key="index" :k="index" :allpage="allpagenum" :bili1="bili1" :bili2="bili2" :type="type" :current="currentpage" v-for="(page,index) in pagelists"></my-page>
+                    <section class="swiper-slide swiper-slide10 hidden" :class="{'display':loaded}">
+                        <div class="comment-wrapper">
+                            <div class="content">
+                                <h1>留言祝福</h1>
+                                <div class="comment-wrap">
+                                    <div class="list-block media-list">
+                                        <ul>
+                                            <li v-for="item in commentList">
+                                                <div class="item-content">
+                                                    <div class="item-media"><img :src="item.userAvatar||'https://res.zhangu365.com/syspic/img/fe6a7205497a02c335d46e8e47a3ba04.png?x-oss-process=image/resize,w_100'" width="44"></div>
+                                                    <div class="item-inner">
+                                                        <div class="item-title-row">
+                                                            <div class="item-title">{{item.userNickName||item.authorNickName}} </div><span>{{item.createTime}}</span>
+                                                        </div>
+                                                        <div class="item-text">{{item.content}}</div>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="button-wrapper"> <a v-on:click="openTextareaPopup">我要留言</a><a v-on:click="openCommentPopup">查看更多</a></div>
+                            </div>
+                        </div>
+                        <!--<div class="map">
+                            <a href="https://apis.map.qq.com/tools/poimarker?type=0&marker=coord:22.854080,113.344241;title:新郎（陈国华）;addr:广州市南沙区人绿路新村大街西六巷&key=3JMBZ-WJL66-IMBSQ-MHHOP-MFYPS-OVFIR&referer=myapp">
+                                <img src="https://apis.map.qq.com/ws/staticmap/v2/?center=22.854080,113.344241&zoom=16&size=200*300&maptype=roadmap&scale=2&markers=size:large|color:0xFFCCFF|22.854080,113.344241&labels=border:0|size:16|color:0xffffff|bgcolor:0x2D9FF000|anchor:3|offset:0_40|新郎家|22.854080,113.344241&key=3JMBZ-WJL66-IMBSQ-MHHOP-MFYPS-OVFIR"></a>
+                            <a href="https://apis.map.qq.com/tools/poimarker?type=0&marker=coord:22.812323,113.389163;title:新娘（冼楚兴）;addr:广州市南沙区榄核镇顺河村海傍街44号&key=3JMBZ-WJL66-IMBSQ-MHHOP-MFYPS-OVFIR&referer=myapp"> <img src="https://apis.map.qq.com/ws/staticmap/v2/?center=22.812323,113.389163&zoom=16&size=200*300&maptype=roadmap&scale=2&markers=size:large|22.812323,113.389163&labels=border:0|size:16|color:0xffffff|bgcolor:0xDB4C6200|anchor:3|offset:0_40|新娘家|22.812323,113.389163&key=3JMBZ-WJL66-IMBSQ-MHHOP-MFYPS-OVFIR"></a></div> -->
+                    </section>
+                </div>
+            </transition>
+            <div class="pagecount" v-show="isPage" v-text="pageStr"></div>
+            <img :style="showaudioImg()" v-show="!rightbody" src="scene/images/up.png" style="width:60px;height:36px; bottom:10%; left:42%;" id="array" class="resize">
+        </div>
+        <div class="all-comment hidden" v-show="commentPopupVisible" :class="{'display':loaded}">
+            <div class="list-block media-list">
+                <ul>
+                    <li v-for="item in commentList">
+                        <div class="item-content">
+                            <div class="item-media"><img :src="item.userAvatar||'https://res.zhangu365.com/syspic/img/fe6a7205497a02c335d46e8e47a3ba04.png?x-oss-process=image/resize,w_100'" width="44"></div>
+                            <div class="item-inner">
+                                <div class="item-title-row">
+                                    <div class="item-title">{{item.userNickName||item.authorNickName}} </div><span>{{item.createTime}}</span>
+                                </div>
+                                <div class="item-text">{{item.content}}</div>
+                            </div>
+                        </div>
+                    <li v-on:click="getComment" class="loadmore" v-show="!allLoaded">加载更多</li>
+                    </li>
+                </ul>
+            </div>
+            <div class="button-wrapper">
+                <a v-on:click="closeCommentPopup">关闭</a>
+                <a v-on:click="openTextareaPopup">我要留言</a>
+            </div>
+        </div>
+        <div class="textareaPopup hidden" v-show="textareaPopupVisible" :class="{'display':loaded}">
+            <div class="content">
+                <h1>留言祝福</h1>
+                <div class="avatar-wrapper"><span :style=" 'background-image:url('+(userInfo||{}).userAvatar+')'  "></span><em>{{userInfo==undefined?'请登录':(userInfo||{}).userNickName}}</em>: <a v-on:click="logout" v-show="userInfo!=undefined">退出</a>
+                    <div class="three-part" v-show="userInfo==undefined"><a v-on:click="go2LoginByQQ"><span class="qq"></span></a><a v-on:click="go2LoginByWeibo"><span class="weibo"></span></a><a v-on:click="anonymousLogin"><span class="anonymous">署名</span></a></div>
+                </div>
+                <input type="text" class="anonymousName" v-show="(userInfo||{}).diy" placeholder="你的名字" v-model="anonymousName">
+                <textarea v-model="comment" cols="30" rows="4" placeholder="请输入留言"></textarea>
+                <div class="button-wrapper"><a v-on:click="closeTextareaPopup">关闭</a> <a v-on:click="doSubmit">留言</a></div>
+            </div>
+        </div>
+    </div>
+    <script src="scene/js/jquery.min.js"></script>
+    <script src="scene/js/layer_mobile/layer.js"></script>
+    <script src="scene/js/vue2-countdown.js?t=1"></script>
+    <script src="scene/js/swiper-3.4.2.jquery.min.js"></script>
+    <script src="scene/js/vue.js"></script>
+    <script src="scene/js/page.js?t=11"></script>
+    <script charset="utf-8" src="https://map.qq.com/api/js?v=2.exp&key=3JMBZ-WJL66-IMBSQ-MHHOP-MFYPS-OVFIR"></script>
+    <script>
+    $.getParameter = function(key) {
+        var url = window.location.href;
+        var reg = new RegExp("(^|&)" + key + "=([^&]*)(&|$)");
+        var result = url.split('?')[1].match(reg);
+        return result ? decodeURIComponent(result[2]) : null;
+    }
+    /**
+     * 设置缓存
+     * @param key {String} [键名]
+     * @param value {Object} [键值]
+     * @param es {Number} [保存的时间（s）] //不传长期保存
+     * @param isSessionStorage {Boolean} [是否存sessionStorage]
+     */
+    $.setCache = function(option) {
+        var defaultOption = {
+            key: '',
+            value: '',
+            es: null,
+            isSessionStorage: false
+        }
+        var opt = $.extend(defaultOption, option)
+        // 设置过期原则
+        if (!opt.value) {
+            if (opt.isSessionStorage) {
+                sessionStorage.removeItem(opt.key)
+            } else {
+                localStorage.removeItem(opt.key)
+            }
+        } else {
+            var e
+            if (opt.es === null) {
+                e = null
+            } else {
+                e = opt.es * 1000
+            }
+            var exp = new Date()
+            if (opt.isSessionStorage) {
+                sessionStorage.setItem(opt.key, JSON.stringify({ value: opt.value }))
+            } else {
+                localStorage.setItem(opt.key, JSON.stringify({ value: opt.value, expires: e === null ? e : exp.getTime() + e, createtime: exp.getTime() }))
+            }
+        }
+    }
+
+    $.getCache = function(option) {
+        var defaultOption = {
+            isSessionStorage: false,
+            key: ''
+        }
+        var opt = $.extend(defaultOption, option)
+        if (localStorage.getItem(opt.key) !== null && !opt.isSessionStorage) {
+            var o = JSON.parse(localStorage.getItem(opt.key))
+            if ((!o || o.expires < Date.now()) && o.expires !== null) {
+                localStorage.removeItem(opt.key)
+                return null
+            } else {
+                return o.value
+            }
+        } else if (sessionStorage.getItem(opt.key) !== null && opt.isSessionStorage) {
+            return JSON.parse(sessionStorage.getItem(opt.key))
+        } else {
+            return null
+        }
+    }
+    var _self = this;
+    var loop = 0;
+    var ispage = 0;
+    var auto_play = 0 * 1000;
+    var isHttp = false;
+    var syslogo = {
+        template: "<div class=\"loadimg\"><div class=\"loggif\"><img :src=logimg></div></div>",
+        props: ['logimg']
+    };
+
+    var vue = new Vue({
+        el: "#app",
+        data: {
+            baseurl: '',
+            pagelists: [],
+            currentpage: 0,
+            musicflag: 1,
+            bili1: document.documentElement.clientWidth / 640,
+            bili2: document.documentElement.clientHeight / 1008,
+            isplay: true,
+            pageStr: 0,
+            isPage: ispage,
+            callBk: '',
+            startTime: new Date().getTime(),
+            rightbody: true,
+            logimg: "https://res.zhangu365.com/syspic/img/fe6a7205497a02c335d46e8e47a3ba04.png?x-oss-process=image/resize,w_100",
+            allpagenum: 0,
+            type: 1,
+            commentPageIndex: 1,
+            commentList: [],
+            commentPopupVisible: false,
+            allLoaded: false,
+            loaded: false,
+            textareaPopupVisible: false,
+            comment: '',
+            userInfo: undefined,
+            anonymousName: ''
+        },
+        components: {
+            'my-page': pagelist,
+            'sys-logo': syslogo,
+        },
+        mounted: function() {
+            this.getArticleDetail()
+            this.login()
+            this.allpagenum = this.pagelists.length - 1;
+            $(document).ready(function() {
+                //一般情况下，这样就可以自动播放了，但是一些奇葩iPhone机不可以
+                //document.getElementById('sceneaudio').play();
+                //必须在微信Weixin JSAPI的WeixinJSBridgeReady才能生效
+                document.addEventListener("WeixinJSBridgeReady", function() {
+                    document.getElementById('sceneaudio').play();
+                    //document.getElementById('video').play();
+                }, false);
+            })
+            var _self = this;
+            _self.rightbody = false;
+            //_self.rightbody = false;
+            setTimeout(function() {}, 2000);
+        },
+        watch: {
+            anonymousName: function(val, oldVal) {
+                console.log(val, oldVal)
+                this.userInfo.userNickName = val
+            }
+        },
+        methods: {
+            anonymousLogin() {
+                this.userInfo = {
+                    diy: true,
+                    userAvatar: 'https://res.zhangu365.com/syspic/img/fe6a7205497a02c335d46e8e47a3ba04.png?x-oss-process=image/resize,w_100'
+                }
+            },
+            logout() {
+                this.userInfo = undefined
+                localStorage.removeItem('loginType')
+                localStorage.removeItem('threePartInfo')
+                localStorage.removeItem('loginInfo')
+            },
+            go2LoginByQQ() {
+                $.setCache({ key: 'loginType', value: 'qq' })
+                window.location.href = 'https://graph.qq.com/oauth2.0/authorize?client_id=101512221&response_type=code&redirect_uri=http://www.chenguohua.com.cn/mywedding/index.html?jb=2'
+            },
+            go2LoginByWeibo() {
+                $.setCache({ key: 'loginType', value: 'weibo' })
+                window.location.href = 'https://api.weibo.com/oauth2/authorize?client_id=4197904860&response_type=code&redirect_uri=http://www.chenguohua.com.cn/mywedding/index.html?jb=2'
+            },
+            login() {
+                var _this = this
+                var code = window.location.href.match(/code=(\S*)/)
+                var threePartInfo = $.getCache({ key: 'threePartInfo' })
+                var loginInfo = $.getCache({ key: 'loginInfo' })
+                var loginType = $.getCache({ key: 'loginType' })
+                var isQQ = loginType === 'qq'
+                var isWeibo = loginType === 'weibo'
+                var url = ''
+                console.log(code)
+                if (code !== null) {
+                    code = code[1]
+                    if (isQQ) {
+                        url = '/api/login/getQQAccessToken'
+                    } else if (isWeibo) {
+                        url = '/api/login/getWeiboAccessToken'
+                    }
+                    $.ajax({
+                        url: url,
+                        dataType: 'json',
+                        type: 'post',
+                        data: {
+                            code: code
+                        },
+                        success: function(res) {
+                            $.setCache({ key: 'threePartInfo', value: res })
+                            window.location.href = 'http://www.chenguohua.com.cn/mywedding/index.html?jb=2'
+                        }
+                    })
+                } else if (threePartInfo && !loginInfo) {
+                    var url = ''
+                    var data = {
+                        access_token: threePartInfo.access_token
+                    }
+                    if (isQQ) {
+                        url = '/api/login/loginByQQ'
+                    } else if (isWeibo) {
+                        url = '/api/login/loginByWeibo'
+                        data.uid = threePartInfo.uid
+                    }
+                    $.ajax({
+                        url: url,
+                        type: 'post',
+                        dataType: 'json',
+                        data: data,
+                        success: function(res) {
+                            if (res.status) {
+                                console.log(res)
+                                _this.userInfo = res.data
+                                $.setCache({ key: 'loginInfo', value: res.data })
+                            } else if (res.status === 0) {
+                                window.location.reload()
+                            }
+                        }
+                    })
+                } else {
+                    _this.userInfo = loginInfo
+                }
+            },
+            openTextareaPopup() {
+                this.textareaPopupVisible = true
+            },
+            closeTextareaPopup() {
+                this.textareaPopupVisible = false
+            },
+            openCommentPopup() {
+                this.commentPopupVisible = true
+            },
+            closeCommentPopup() {
+                this.commentPopupVisible = false
+            },
+            doSubmit() {
+
+                // alert(JSON.stringify( ($.getCache({ key: 'loginInfo' }) || {}).access_token))
+                var _this = this
+
+                var url = '/api/comment/addComment'
+                var data = {
+                    content: this.comment,
+                    articleId: 2
+                }
+                if (this.comment === '') {
+                    return false
+                }
+                if(!this.userInfo){
+                       this.anonymousLogin()
+                }
+                if (this.userInfo.diy) {
+                    if (this.anonymousName === '') {
+                        return false
+                    } else {
+                        url = '/api/comment/addCommentAnonymous'
+                        data.anonymousName = _this.anonymousName
+                    }
+                }
+                _this.closeTextareaPopup()
+                $.ajax({
+                    dataType: 'json',
+                    type: 'post',
+                    url: url,
+                    headers: {
+                        access_token: ($.getCache({ key: 'loginInfo' }) || {}).access_token
+                    },
+                    data: data,
+                    success: function(res) {
+                        _this.commentPageIndex = 1
+                        _this.commentList = []
+                        _this.comment = ''
+                        _this.getComment()
+                    },
+                    error: function(err) {
+                        if (err.status === 403) {
+                            alert('登录失效，请重新登录')
+                            if (_this.userInfo) {
+                                _this.logout()
+                            } else {
+                                alert('请先登录')
+                            }
+                        }
+                    }
+                })
+            },
+            getArticleDetail() {
+                var _this = this
+                console.log(this.$route)
+                $.ajax({
+                    dataType: 'json',
+                    type: 'post',
+                    url: '/api/article/getArticleDetail',
+                    data: {
+                        articleId: 2
+                    },
+                    success: function(res) {
+                        _this.pagelists = JSON.parse(res.result.content)
+                        setTimeout(function() {
+                            _this.getComment()
+                            var mySwiper = new Swiper('.swiper-container', {
+                                direction: 'vertical',
+                                //autoplay:2000,
+                                autoplay: auto_play,
+                                loop: loop,
+                                autoplayDisableOnInteraction: false,
+                                paginationType: 'progress',
+                                paginationClickable: true,
+                                autoplayStopOnLast: true,
+                                //virtualTranslate : true,
+                                mousewheelControl: true,
+                                onInit: function(swiper) {
+                                    _self.vue._data.pageStr = swiper.realIndex + 1 + "/" + _self.vue._data.pagelists.length;
+                                },
+                                onSlideChangeStart: function(swiper) {
+                                    $(".swiper-slide-active").find('.item').removeClass('nopage').addClass('showpage')
+                                    $(".swiper-slide-prev,.swiper-slide-next").find('.item').removeClass('showpage').addClass('nopage')
+                                },
+                                onTransitionEnd: function(swiper) {
+                                    // console.log(swiper.activeIndex)
+                                    _self.vue._data.currentpage = swiper.realIndex
+                                    _self.vue._data.pageStr = swiper.realIndex + 1 + "/" + _self.vue._data.pagelists.length;
+                                }
+                            })
+                        }, 0)
+                    }
+                })
+            },
+            getComment() {
+                var _this = this
+                $.ajax({
+                    dataType: 'json',
+                    type: 'post',
+                    url: '/api/comment/getCommentList',
+                    data: {
+                        page: this.commentPageIndex,
+                        rows: 10,
+                        articleId: 2
+                    },
+                    success: function(res) {
+                        _this.commentList = _this.commentList.concat(res.rows)
+                        if(   res.total==0){
+                            _this.commentList=[{content:'暂无留言，由你来做第一个祝福的人吧！'}]
+                        }
+                        _this.commentPageIndex = _this.commentPageIndex + 1
+                        _this.loaded = true
+                        if (_this.commentList.length >= res.total * 1) {
+                            _this.allLoaded = true
+                        }
+                    }
+                })
+            },
+            setProcessStyle: function() {
+                return "transform-origin:100% 0;transform:rotate(-90deg);top:" + (document.documentElement.clientHeight - 5) + "px;height:" + document.documentElement.clientWidth + "px";
+            },
+            playOrPauseMusic: function() {
+                var audio = document.getElementById("sceneaudio");
+                if (audio.paused) {
+                    // audio.src =this.sceneInfo.music;
+                    audio.play();
+                    this.isplay = true;
+                } else {
+
+                    this.isplay = false;
+                    audio.pause()
+                }
+            },
+            showimg: function(src) {
+                return this.baseurl + src
+            },
+            showaudioImg: function() {
+                if (this.rightbody) {
+                    return "display:none";
+                } else {
+                    return "display:block";
+                }
+            },
+            // change1: function() {
+            //     $("#jbval").val(1);
+            //     $(".submitbtn").css("background", "#2fd9bf");
+            // },
+            // change2: function() {
+            //     $("#jbval").val(2);
+            //     $(".submitbtn").css("background", "#2fd9bf");
+            // },
+            // change3: function() {
+            //     $("#jbval").val(3);
+            //     $(".submitbtn").css("background", "#2fd9bf");
+            // },
+            // change4: function() {
+            //     $("#jbval").val(4);
+            //     $(".submitbtn").css("background", "#2fd9bf");
+            // },
+            // change5: function() {
+            //     $("#jbval").val(5);
+            //     $(".submitbtn").css("background", "#2fd9bf");
+            // },
+            // change6: function() {
+            //     $("#jbval").val(6);
+            //     $(".submitbtn").css("background", "#2fd9bf");
+            // },
+            // change7: function() {
+            //     $("#jbval").val(7);
+            //     $(".submitbtn").css("background", "#2fd9bf");
+            // },
+            // change8: function() {
+            //     $("#jbval").val(8);
+            //     $(".submitbtn").css("background", "#2fd9bf");
+            // },
+            // change9: function() {
+            //     $("#jbval").val(9);
+            //     $(".submitbtn").css("background", "#2fd9bf");
+            // },
+            // cancel: function() {
+            //     $("#jbval").val(0);
+            //     $(".jubao").hide();
+            //     $(".submitbtn").css("background", "#ebebeb");
+            // },
+            // confirm: function() {
+            //     if ($("#jbval").val() == 0) {
+            //         layer.msg('请选择举报原因!');
+            //         return false;
+            //     }
+            //     var param = {
+            //         sceneid: 864,
+            //         id: $("#jbval").val()
+            //     }
+            //     $.ajax({
+            //         method: 'post',
+            //         url: 'http://www.ezhangu.com/api/scene/scenejbao',
+            //         data: param,
+            //         async: false,
+            //         success: function(res) {
+            //             if (res.code == 200) {
+            //                 $(".jubaoitem").hide();
+            //                 $(".jubaoinfo").show();
+            //                 setTimeout(function() {
+            //                     $(".jubao").hide();
+            //                 }, 3000);
+            //             } else {
+            //                 layer.msg(res.msg);
+            //             }
+            //         }
+            //     });
+            // }
+        }
+    });
+    </script>
+</body>
+
+</html>

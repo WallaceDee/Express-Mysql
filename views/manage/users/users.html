@@ -22,7 +22,6 @@
             <a class="easyui-linkbutton" data-options="iconCls:'icon-save'" onclick="confirmChanges()">保存修改</a>
             <a class="easyui-linkbutton" data-options="iconCls:'icon-undo'" onclick="rejectChanges()">撤销修改</a>
             <a class="easyui-linkbutton" data-options="iconCls:'icon-remove'" onclick="doDelete()">删除</a>
-
     </div>
     <div id="window" class="easyui-window" title="确认修改内容" data-options="modal:true,closed:true,iconCls:'icon-save',collapsible:false" style="width:600px;height:300px;">
         <table id="preview-datagrid" style="height: 210px;">
@@ -47,7 +46,7 @@
                 { title: '昵称', field: 'userNickName', align: 'center', editor: 'text', width: 100, rowspan: 2 },
                 { title: '头像', field: 'userAvatar', align: 'center', width: 40, formatter: function(val, row, index) { return imageFormatter(val, row, index) }, rowspan: 2 },
                 { title: '电话', field: 'userPhone', align: 'center', width: 90, editor: 'text', rowspan: 2 },
-                { title: '生日', field: 'userBirthday', align: 'center', width: 90, editor: 'text', rowspan: 2 },
+                { title: '生日', field: 'userBirthday', align: 'center', width: 90, editor: 'datebox', rowspan: 2 },
                 { title: '性别', field: 'userGender', align: 'center', width: 50, editor: { type: 'combobox', options: { valueField: 'value', textField: 'label', data: [{ label: '保密', value: 'n' }, { label: '男', value: 'm' }, { label: '女', value: 'f' }] } }, formatter: function(val, row, index) { return genderFormatter(val, row, index) }, rowspan: 2 },
                 { title: '注册类型', colspan: 3, width: 300 },
                 { title: '创建时间', field: 'createTime', align: 'center', sortable: true, width: 130, rowspan: 2 },
@@ -68,7 +67,9 @@
             });
         }
     }).datagrid('enableCellEditing');
-
+    function a(){
+        alert(1)
+    }
     function genderFormatter(val, row, index) {
         var gender = "保密";
         if (val === 'm') {

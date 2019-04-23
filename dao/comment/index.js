@@ -17,12 +17,24 @@ module.exports = {
             $util.print(res, error, { message: '评论成功' })
         });
     },
+    addCommentAnonymous: (req, res) => {
+        // addAnonymous: 'INSERT INTO table_comment (content,parentId,authorNickName,articleId,createTime) VALUES(?,?,?,?,CURRENT_TIMESTAMP)',
+        let query = req.body
+        let params = []
+        params.push(query.content)
+        params.push(query.parentId || 0)
+        params.push(query.anonymousName)
+        params.push(query.articleId)
+        $db.executeSql($sql.addAnonymous, params, function(error, result) {
+            $util.print(res, error, { message: '评论成功' })
+        });
+    },
     getCommentListByArticleId: (req, res) => {
-         let query = req.body
+        let query = req.body
         let params = [];
         params.push(query.articleId)
-        params.push(query.rows * 1 * (query.page - 1)||0)
-        params.push(query.rows * 1||10)
+        params.push(query.rows * 1 * (query.page - 1) || 0)
+        params.push(query.rows * 1 || 10)
         let total = 0
         let rows = []
         $db.executeSql($sql.count, params, (err, result) => {
