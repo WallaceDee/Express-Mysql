@@ -1,8 +1,8 @@
 var mysql = require('mysql');
 var dbConfig = {
-    host: '39.105.135.155',
+    host: 'localhost',
     user: 'root',
-    password: '363121',
+    password: '',
     database: 'x',
     port: 3306,
     multipleStatements: true

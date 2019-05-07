@@ -4,7 +4,7 @@ var util = require('../../util/util.js')
 var articleDao = require('../../dao/article/index');
 
 /* GET home page. */
-router.post('/list', util.ensureAuthorized, (req, res, next) => {
+router.post('/list',  (req, res, next) => {
     articleDao.list(req, res, next)
 });
 

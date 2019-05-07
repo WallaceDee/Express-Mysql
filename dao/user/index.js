@@ -75,6 +75,7 @@ module.exports = {
         });
     },
     login: (req, res) => {
+        console.log(111111)
         let query = req.body
         let md5 = crypto.createHash("md5")
         let password = md5.update(query.password).digest("hex")

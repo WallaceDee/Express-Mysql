@@ -1,0 +1,178 @@
+{
+    "skills": [
+    {
+        "name": "JavaScript(ES5/ES6)",
+        "percent": 90
+    },
+    {
+        "name": "JQuery",
+        "percent": 90
+    },
+    {
+        "name": "Vue2",
+        "percent": 90
+    },
+    {
+        "name": "Angular1",
+        "percent": 60
+    },
+    {
+        "name": "React",
+        "percent": 50
+    },
+    {
+        "name": "MintUI/element/iview",
+        "percent": 100
+    }],
+    "experience": [
+    {
+        "name": "肇庆学院 本科 / 软件工程",
+        "time": "2011-2015",
+        "long": 8
+    },
+    {
+        "name": "广州拓胜计算机技术服务有限公司（实习）",
+        "time": "2014.09-2015.03",
+        "long": 9
+    },
+    {
+        "name": "广州市逸龙信息科技有限公司",
+        "time": "2015.03-2016.03",
+        "long": 18
+    },
+    {
+        "name": "广州市胜亿科技有限公司",
+        "time": "2016.03-2017.02",
+        "long": 16
+    },
+    {
+        "name": "湖南巨景证券投资顾问有限公司广州分公司",
+        "time": "2017.02-2018.03",
+        "long": 20
+    },
+    {
+        "name": "佛山市博纳德信息科技有限公司",
+        "time": "2018.03-至今",
+        "long": 16
+    }],
+    "projects": [
+    {
+        "name": "鸿畅净享生活(微信公众号)",
+        "desc": "该网站是单页Web应用，使用包含微信支付，微信图片上传，微信卡券等微信接口，本人根据UI设计图编写出全部页面，负责全部异步数据交互,微信搜索关注《鸿畅净享生活》可见。",
+        "time": "2017.08-2017.10",
+        "preview": "http://www.homchang.site/homchang/index.html",
+        "github": "https://github.com/WallaceDee/hongchang"
+    },
+    {
+        "name": "建东体育(微信公众号)",
+        "desc": "建东体育功能主要体现在视频直播，视频回放集锦，线上支付，浏览会员咨询等。项目使用webpack管理、打包，使用微信支付等微信接口，微信搜索关注《建东体育》可见。本人根据需求编写出全部页面，负责数据交互。",
+        "time": "2017.12-2018.03",
+        "github": "https://github.com/WallaceDee/webpack-demo",
+        "imgList": [
+        {
+            "src": "https://wallacedee.github.io/public/images/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20180305132806.png"
+        },
+        {
+            "src": "https://wallacedee.github.io/public/images/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20180305132809.png"
+        },
+        {
+            "src": "https://wallacedee.github.io/public/images/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20180305132811.png"
+        }]
+    },
+    {
+        "name": "聚牛财经(微信公众号)已下线",
+        "desc": "聚牛财经是宣传公司形象，发布视频、资讯、服务信息等的平台,微信搜索关注《聚牛财经》可见。本人根据UI设计图编写出全部页面，负责异步数据交互。",
+        "time": "2017.04-2017.06",
+        "github": "https://github.com/WallaceDee/WallaceDee.github.io/tree/master/html/JuJingIAMobile",
+        "preview": "https://wallacedee.github.io/html/JuJingIAMobile/index.html"
+    },
+    {
+        "name": "同楼合屋合租平台(微信公众号)已下线",
+        "desc": "同楼合屋合租平台是微信端订阅的一个租房平台用户自发发布合租信息，用户自行协商合租的平台。根据UI设计图编写出全部页面，负责部分异步数据交互。",
+        "time": "2016.04-2016.10",
+        "imgList": [
+        {
+            "src": "https://wallacedee.github.io/public/images/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20180305124549.png"
+        },
+        {
+            "src": "https://wallacedee.github.io/public/images/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20180305124555.png"
+        },
+        {
+            "src": "https://wallacedee.github.io/public/images/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20180305124600.png"
+        }]
+    },
+    {
+        "name": "房将军租房平台(微信公众号)已下线",
+        "desc": "房将军租房平台是微信端公众号的一个租房平台，房东发布房源，用户可以跟房东租房。根据UI设计图编写出全部页面，负责部分异步数据交互。",
+        "time": "2016.04-2016.10",
+        "imgList": [
+        {
+            "src": "https://wallacedee.github.io/public/images/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20180305124454.png"
+        },
+        {
+            "src": "https://wallacedee.github.io/public/images/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20180305124531.png"
+        },
+        {
+            "src": "https://wallacedee.github.io/public/images/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20180305124543.png"
+        }]
+    },
+    {
+        "name": "帮专网PC数据展示",
+        "desc": "帮专云主页主要宣传服务类型服务范围,以及数据展示。备注：主页使用是百度的echart插件编写图表。",
+        "multi": [
+        {
+            "name": "帮专网数据展示1",
+            "github": "https://github.com/WallaceDee/WallaceDee.github.io/tree/master/html/ipryun_chart",
+            "preview": "https://wallacedee.github.io/html/ipryun_chart/index.html"
+        },
+        {
+            "name": "帮专网数据展示2",
+            "github": "https://github.com/WallaceDee/WallaceDee.github.io/tree/master/html/ipryun_chart",
+            "preview": "https://wallacedee.github.io/html/ipryun_chart/index_white-theme.html"
+        },
+        {
+            "name": "帮专网主页",
+            "github": "https://github.com/WallaceDee/WallaceDee.github.io/tree/master/html/ipryun",
+            "preview": "https://www.ipryun.com/"
+        }]
+    },
+    {
+        "name": "聚牛财经门户网站（PC）",
+        "desc": "简介：聚牛财经门户网站集公司简介，业务介绍，咨询发布，视频观看，直播观看，团队介绍等，是一个典型的门户网站。备注：1、本人根据UI设计图编写出全部页面，负责全部异步数据交互。",
+        "multi": [
+        {
+            "name": "聚牛财经课堂页面",
+            "github": "https://github.com/WallaceDee/WallaceDee.github.io/tree/master/html/homepage",
+            "preview": "https://wallacedee.github.io/html//homepage/course.html"
+        },
+        {
+            "name": "聚牛财经首页",
+            "github": "https://github.com/WallaceDee/WallaceDee.github.io/tree/master/html/pre",
+            "preview": "https://wallacedee.github.io/html//pre/index.html"
+        },
+        {
+            "name": "聚牛财经推广页面",
+            "github": "https://github.com/WallaceDee/WallaceDee.github.io/tree/master/html/homepage",
+            "preview": "https://wallacedee.github.io/html//homepage/index.html"
+        }]
+    },
+    {
+        "name": "其他活动h5页面",
+        "multi": [
+        {
+            "name": "H5推广页面",
+            "github": "https://github.com/WallaceDee/WallaceDee.github.io/tree/master/html/red",
+            "preview": "https://wallacedee.github.io/html/red/index.html"
+        },
+        {
+            "name": "双11推广页面",
+            "github": "https://github.com/WallaceDee/WallaceDee.github.io/tree/master/html/game",
+            "preview": "https://wallacedee.github.io/html/game/index.html"
+        },
+        {
+            "name": "H5推广页面",
+            "github": "https://github.com/WallaceDee/WallaceDee.github.io/tree/master/html/prejudgment",
+            "preview": "https://wallacedee.github.io/html/prejudgment/index.html"
+        }]
+    }]
+}

@@ -6,7 +6,7 @@ var ueditor = require("../../lib/ueditor")
 // /ueditor 入口地址配置 https://github.com/netpi/ueditor/blob/master/example/public/ueditor/ueditor.config.js
 // 官方例子是这样的 serverUrl: URL + "php/controller.php"
 // 我们要把它改成 serverUrl: URL + 'ue'
-router.use("/", ueditor(path.join(__dirname, '../public'), function(req, res, next) {
+router.use("/", ueditor(path.join(__dirname, '../../public'), function(req, res, next) {
     // ueditor 客户发起上传图片请求
     if (req.query.action === 'uploadimage') {
         // 这里你可以获得上传图片的信息

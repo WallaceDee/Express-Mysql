@@ -8,11 +8,24 @@ var bodyParser = require('body-parser');
 var users = require('./routes/api/users');
 var login = require('./routes/api/login');
 var ue = require('./routes/api/ue');
+var category = require('./routes/api/category');
 var article = require('./routes/api/article');
+var blog = require('./routes/api/blog');
 var comment = require('./routes/api/comment');
 var manage = require('./routes/manage');
 var app = express();
 
+// var app = require('express')();
+app.use("*", function (req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header("Access-Control-Allow-Headers", "Content-Type,Content-Length, Authorization, Accept,X-Requested-With");
+  res.header("Access-Control-Allow-Methods","PUT,POST,GET,DELETE,OPTIONS");
+  if (req.method === 'OPTIONS') {
+    res.send(200)
+  } else {
+    next()
+  }
+});
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 
@@ -36,6 +49,8 @@ app.use('/api/ue', ue);
 app.use('/api/users', users);
 app.use('/api/login', login);
 app.use('/api/article', article);
+app.use('/api/category', category);
+app.use('/api/blog', blog);
 app.use('/api/comment', comment);
 
 app.get('/index', function(req, res) {

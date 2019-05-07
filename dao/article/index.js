@@ -8,7 +8,9 @@ module.exports = {
     list: (req, res) => {
         //query: 'SELECT * FROM table_user WHERE userName LIKE "%?%" OR userPhone LIKE "%?%"',
         let query = $util.extend(req.body, {
-            keyword: ''
+            keyword: '',
+            page:1,
+            rows:10
         });
         let params = [];
         params.push(query.keyword)
