@@ -6,7 +6,7 @@ var util = require('../../util/util.js')
 router.get('/', function(req, res, next) {
     res.render('user');
 });
-router.post('/list',util.ensureAuthorized, (req, res, next) => {
+router.post('/list', util.ensureAuthorized, (req, res, next) => {
     userDao.list(req, res, next)
 });
 router.post('/deleteUser', util.ensureAuthorized, function(req, res, next) {
@@ -23,8 +23,8 @@ router.post('/register', function(req, res, next) {
 router.post('/login', function(req, res, next) {
     userDao.login(req, res, next)
 });
-router.post('/getUserInfo', util.ensureAuthorized, function(req, res, next) {
-    userDao.getUserInfo(req, res, next)
+router.get('/getAdminUserInfo', function(req, res, next) {
+    userDao.getAdminUserInfo(req, res, next)
 });
 router.post('/modify', function(req, res, next) {
     userDao.modify(req, res, next)
@@ -33,6 +33,5 @@ router.post('/modify', function(req, res, next) {
 router.post('/getUserAvailable', function(req, res, next) {
     userDao.getUserAvailable(req, res, next)
 });
-
 
 module.exports = router;

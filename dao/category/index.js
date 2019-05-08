@@ -34,22 +34,22 @@ module.exports = {
     create: (req, res) => {
         var query = req.body
         $db.executeSql($sql.create, [query.categoryName, query.parentId], function(error, result) {
-            $util.print(res, error, { message: '创建成功' })
+            $util.print(res, { error, result: { message: '创建成功' } })
         });
     },
     delete: (req, res) => {
         var query = req.body
         $db.executeSql($sql.getCategoryChildrenByParentId, [query.categoryId], function(error, result) {
             if (error) {
-                $util.print(res, error, result)
+                $util.print(res, { error, result })
             } else {
                 if (result.length) {
-                    $util.print(res, { message: '该节点下还有子节点，不能删除' }, {})
+                    $util.print(res, { error: { message: '该节点下还有子节点，不能删除' } })
                 } else {
                     console.log('这个节点可以删除啊' + query.categoryId)
                     $db.executeSql($sql.delete, [query.categoryId], function(err) {
                         console.log(err)
-                        $util.print(res, err, { message: '删除成功' })
+                        $util.print(res, { error: err, result: { message: '删除成功' } })
                     })
                 }
             }
@@ -58,19 +58,19 @@ module.exports = {
     updateCategoryName: (req, res) => {
         var query = req.body
         $db.executeSql($sql.updateCategoryName, [query.categoryName, query.categoryId], function(error, result) {
-            $util.print(res, error, { message: '修改成功' })
+            $util.print(res, { error, result: { message: '修改成功' } })
         });
     },
     updateCategoryParentId: (req, res) => {
         var query = req.body
         $db.executeSql($sql.updateCategoryParentId, [query.parentId, query.categoryId], function(error, result) {
-            $util.print(res, error, { message: '修改成功' })
+            $util.print(res, { error, result: { message: '修改成功' } })
         });
     },
     setCategoryToTop: (req, res) => {
         var query = req.body
         $db.executeSql($sql.updateCategoryUpdateTime, [query.categoryId], function(error, result) {
-            $util.print(res, error, { message: '置顶成功' })
+            $util.print(res, { error, result: { message: '置顶成功' } })
         });
     },
 }

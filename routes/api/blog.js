@@ -7,6 +7,9 @@ var blogDao = require('../../dao/blog/index');
 router.post('/list',  (req, res, next) => {
     blogDao.list(req, res, next)
 });
+router.post('/getDetails',  (req, res, next) => {
+    blogDao.getDetails(req, res, next)
+});
 
 
 module.exports = router;
