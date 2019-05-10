@@ -46,7 +46,7 @@ module.exports = {
         if (error) {
             res.json({
                 status: 0,
-                data: error
+                result: error
             });
         } else {
             res.json({

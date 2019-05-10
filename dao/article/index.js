@@ -137,7 +137,7 @@ module.exports = {
     },
     publicArticle: (req, res) => {
         // publicArticle: 'INSERT INTO table_article(title,content,categoryId,authorUserId,createTime,updateTime) VALUES(?,?,?,?,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP)'
-        console.log(req.userInfo.userId)
+        console.log(req.userInfo)
         let query = req.body
         let params = [query.title, query.content, query.categoryId, req.userInfo.userId]
         console.log(params)

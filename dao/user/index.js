@@ -19,8 +19,7 @@ module.exports = {
                 })
             } else {
                 $util.print(res, {
-                    error,
-                    result: { message: '用户名已存在' }
+                    error: { message: '用户名已存在' }
                 })
             }
         })
@@ -86,10 +85,12 @@ module.exports = {
         let password = md5.update(query.password).digest("hex")
         let params = [query.username, password]
         $db.executeSql($sql.login, params, function(error, result) {
+
             if (result.length === 1) {
                 let access_token = jwt.sign({ userName: result[0].userName, userId: result[0].userId }, cert, { expiresIn: "2h", algorithm: 'RS256' })
                 result[0].access_token = access_token
-                $util.print(res, error, result[0])
+                            console.log(result[0])
+                $util.print(res, { error, result: result[0] })
             } else {
                 $util.print(res, { error: { message: '用户名或密码错误' } })
             }
@@ -124,14 +125,12 @@ module.exports = {
                                     }
                                 });
                             }
-
                         });
                     }
                     break;
                 case "userNickName":
                     {
                         params = [query.userNickName, query.userName];
-
                         $db.executeSql($sql.updateNickName, params, function(error, result) {
                             if (result) {
                                 result = {
@@ -192,7 +191,7 @@ module.exports = {
     },
     getAdminUserInfo: (req, res) => {
         $db.executeSql($sql.getAdminUserInfo, [], function(error, result) {
-            $util.print(res, { error, result:result[0] })
+            $util.print(res, { error, result: result[0] })
         });
     }
 }

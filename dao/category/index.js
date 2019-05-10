@@ -28,7 +28,7 @@ module.exports = {
             var data = setTreeData(result)
             data.sort(descByUpdateTime)
             data = [{ text: '根目录', categoryId: 0, children: data }]
-            res.json(data)
+              $util.print(res, { error: err, result: data})
         });
     },
     create: (req, res) => {

@@ -11,5 +11,9 @@ router.post('/getDetails',  (req, res, next) => {
     blogDao.getDetails(req, res, next)
 });
 
+router.post('/publicBlog', util.ensureAuthorized, (req, res, next) => {
+    blogDao.publicBlog(req, res, next)
+});
+
 
 module.exports = router;

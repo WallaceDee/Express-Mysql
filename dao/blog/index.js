@@ -27,13 +27,28 @@ module.exports = {
     },
     getDetails: (req, res) => {
         let params = [req.body.blogId];
-        console.log(req.body)
         $db.executeSql($sql.getDetailsById, params, (error, result) => {
             if (result && result.length) {
                 $util.print(res, { error, result: result[0] })
             } else {
                 $util.print(res, { error, result: { message: '没找到相关博文' } })
             }
+        })
+    },
+    publicBlog: (req, res) => {
+        // create: 'INSERT INTO table_blog(type,title,content,cover,url,categoryId,authorUserId,createTime,updateTime) VALUES(?,?,?,?,?,?,?,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP)',
+        console.log(req.body)
+        let params = [];
+        params.push(req.body.type)
+        params.push(req.body.title)
+        params.push(req.body.content)
+        params.push(req.body.cover)
+        params.push(req.body.url)
+        params.push(req.body.categoryId)
+        params.push(req.userInfo.userId)
+        console.log(req.userInfo)
+        $db.executeSql($sql.create, params, (error, result) => {
+            $util.print(res, { error, result: { message: '发布成功' } })
         })
     }
 }

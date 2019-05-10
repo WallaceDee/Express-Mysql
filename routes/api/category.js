@@ -3,7 +3,7 @@ var router = express.Router();
 var util = require('../../util/util.js')
 var categoryDao = require('../../dao/category/index');
 
-router.post('/list', (req, res, next) => {
+router.get('/list', (req, res, next) => {
     categoryDao.list(req, res, next)
 });
 
