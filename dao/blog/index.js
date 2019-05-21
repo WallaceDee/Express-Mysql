@@ -43,12 +43,17 @@ module.exports = {
         params.push(req.body.title)
         params.push(req.body.content)
         params.push(req.body.cover)
-        params.push(req.body.url)
         params.push(req.body.categoryId)
         params.push(req.userInfo.userId)
-        console.log(req.userInfo)
-        $db.executeSql($sql.create, params, (error, result) => {
-            $util.print(res, { error, result: { message: '发布成功' } })
-        })
+        if (req.body.blogId !== undefined) {
+            params.push(req.body.blogId)
+            $db.executeSql($sql.update, params, (error, result) => {
+                $util.print(res, { error, result: { message: '修改成功' } })
+            })
+        } else {
+            $db.executeSql($sql.create, params, (error, result) => {
+                $util.print(res, { error, result: { message: '发布成功' } })
+            })
+        }
     }
 }

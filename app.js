@@ -12,6 +12,7 @@ var category = require('./routes/api/category');
 var article = require('./routes/api/article');
 var blog = require('./routes/api/blog');
 var advertisement = require('./routes/api/advertisement');
+var pal = require('./routes/api/pal');
 var comment = require('./routes/api/comment');
 var manage = require('./routes/manage');
 var app = express();
@@ -53,6 +54,7 @@ app.use('/api/article', article);
 app.use('/api/category', category);
 app.use('/api/blog', blog);
 app.use('/api/advertisement', advertisement);
+app.use('/api/pal', pal);
 app.use('/api/comment', comment);
 
 app.get('/index', function(req, res) {
