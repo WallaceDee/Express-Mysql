@@ -135,6 +135,14 @@ module.exports = {
             $util.print(res, error, { message: '置顶成功' })
         });
     },
+		getArticleDetail:(req,res)=>{
+		var query = req.body
+		let params = [query.articleId]
+        console.log(params)
+        $db.executeSql($sql.getArticleDetail, params, (error, result) => {
+            $util.print(res, { error, result: result[0] })
+        });
+	},
     publicArticle: (req, res) => {
         // publicArticle: 'INSERT INTO table_article(title,content,categoryId,authorUserId,createTime,updateTime) VALUES(?,?,?,?,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP)'
         console.log(req.userInfo)
