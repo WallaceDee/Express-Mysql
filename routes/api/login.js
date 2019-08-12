@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var sinaOAuth2 = require('../../lib/sinaOAuth2');
-let $util = require('../../util/util');
+let $util = require('../../lib/util');
 
 router.post('/getWeiboAccessToken', function(req, res, next) {
     var sinaoauth2 = new sinaOAuth2();

@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var util = require('../../util/util.js')
+var util = require('../../lib/util.js')
 var categoryDao = require('../../dao/category/index');
 
 router.get('/list', (req, res, next) => {

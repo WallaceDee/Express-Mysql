@@ -1,19 +1,16 @@
 var express = require('express');
 var router = express.Router();
-var util = require('../../util/util.js')
+var util = require('../../lib/util.js')
 var blogDao = require('../../dao/blog/index');
 
 /* GET home page. */
-router.post('/list',  (req, res, next) => {
-    blogDao.list(req, res, next)
-});
-router.post('/getDetails',  (req, res, next) => {
-    blogDao.getDetails(req, res, next)
-});
+router.get('/list', blogDao.list);
+router.post('/list', blogDao.list);
 
-router.post('/publicBlog', util.ensureAuthorized, (req, res, next) => {
-    blogDao.publicBlog(req, res, next)
-});
+router.get('/getDetails',  blogDao.getDetails);
+router.post('/getDetails',  blogDao.getDetails);
+
+router.post('/publicBlog', util.ensureAuthorized, blogDao.publicBlog);
 
 
 module.exports = router;

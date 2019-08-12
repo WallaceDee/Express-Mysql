@@ -1,21 +1,21 @@
-var express = require('express');
-var path = require('path');
-var favicon = require('serve-favicon');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
+const express = require('express');
+const path = require('path');
+const favicon = require('serve-favicon');
+const logger = require('morgan');
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
 
-var users = require('./routes/api/users');
-var login = require('./routes/api/login');
-var ue = require('./routes/api/ue');
-var category = require('./routes/api/category');
-var article = require('./routes/api/article');
-var blog = require('./routes/api/blog');
-var advertisement = require('./routes/api/advertisement');
-var pal = require('./routes/api/pal');
-var comment = require('./routes/api/comment');
-var manage = require('./routes/manage');
-var app = express();
+const users = require('./routes/api/users');
+const login = require('./routes/api/login');
+const ue = require('./routes/api/ue');
+const category = require('./routes/api/category');
+const article = require('./routes/api/article');
+const blog = require('./routes/api/blog');
+const advertisement = require('./routes/api/advertisement');
+const comment = require('./routes/api/comment');
+const manage = require('./routes/manage');
+const app = express();
+const ejs = require('ejs');
 
 // var app = require('express')();
 app.use("*", function(req, res, next) {
@@ -29,9 +29,7 @@ app.use("*", function(req, res, next) {
     }
 });
 // view engine setup
-app.set('views', path.join(__dirname, 'views'));
-
-var ejs = require('ejs');
+// app.set('views', path.join(__dirname, 'views'));
 
 app.engine('.html', ejs.__express);
 app.set('view engine', 'html'); //app.set('view engine', 'ejs');
@@ -52,9 +50,11 @@ app.use('/api/article', article);
 app.use('/api/category', category);
 app.use('/api/blog', blog);
 app.use('/api/advertisement', advertisement);
-app.use('/api/pal', pal);
 app.use('/api/comment', comment);
+app.use('/manage', manage);
 
+
+//使用ng了
 // app.get('/index', function(req, res) {
 //     res.render('index.html');
 // });

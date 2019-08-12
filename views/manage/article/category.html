@@ -24,10 +24,13 @@
     <script type="text/javascript">
     var $tree = $(".tree")
     $tree.tree({
-        url: '/api/article/getCategoryList',
-        method: 'post',
+        url: '/api/category/list',
+        method: 'get',
         dnd: true,
         queryParams: { access_token: $.getCache({ key: 'loginInfo' }).access_token },
+        loadFilter:function name(data,parent) {
+            return data.result
+        },
         onDblClick: function(node) {
             $(this).tree('beginEdit', node.target);
         },
@@ -37,16 +40,16 @@
         },
         onDrop: function(target, source, point) {
             console.log(point, source)
-            var targetNode = $tree.tree('getData', target)
-            var categoryId = source.categoryId
-            var parentId = 0
-            if (point === 'append') {
-                parentId = targetNode.categoryId
-            } else {
-                parentId = targetNode.parentId
-                console.log(targetNode.sortIndex)
-            }
-            updateCategoryParentId(categoryId, parentId)
+            // var targetNode = $tree.tree('getData', target)
+            // var categoryId = source.categoryId
+            // var parentId = 0
+            // if (point === 'append') {
+            //     parentId = targetNode.categoryId
+            // } else {
+            //     parentId = targetNode.parentId
+            //     console.log(targetNode.sortIndex)
+            // }
+            // updateCategoryParentId(categoryId, parentId)
         }
     })
 
@@ -68,7 +71,7 @@
         $.messager.prompt('创建节点', '在' + parentNode.text + '下创建节点，请输入节点名', function(value) {
             if (value) {
                 $._ajax({
-                    url: '/api/article/createCategory',
+                    url: '/api/category/create',
                     data: {
                         categoryName: value,
                         parentId: parentNode.categoryId
@@ -96,7 +99,7 @@
         var node = getSelected()
         if (node) {
             $._ajax({
-                url: '/api/article/deleteCategory',
+                url: '/api/category/delete',
                 data: {
                     categoryId: node.categoryId
                 },
@@ -120,7 +123,7 @@
 
     function updateCategoryParentId(categoryId, parentId) {
         $._ajax({
-            url: '/api/article/updateCategoryParentId',
+            url: '/api/category/updateCategoryParentId',
             data: {
                 categoryId: categoryId,
                 parentId: parentId
@@ -146,7 +149,7 @@
         var node = getSelected()
         if (node) {
             $._ajax({
-                url: '/api/article/setCategoryToTop',
+                url: '/api/category/setCategoryToTop',
                 data: {
                     categoryId: node.categoryId
                 },
@@ -170,7 +173,7 @@
 
     function updateCategoryName(categoryName, categoryId) {
         $._ajax({
-            url: '/api/article/updateCategoryName',
+            url: '/api/category/updateCategoryName',
             data: {
                 categoryName: categoryName,
                 categoryId: categoryId

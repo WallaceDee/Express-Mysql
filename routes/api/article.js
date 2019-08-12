@@ -1,38 +1,14 @@
-var express = require('express');
-var router = express.Router();
-var util = require('../../util/util.js')
-var articleDao = require('../../dao/article/index');
+const express = require('express');
+const router = express.Router();
+const util = require('../../lib/util.js')
+const articleDao = require('../../dao/article/index');
 
 /* GET home page. */
-router.post('/list',  (req, res, next) => {
-    articleDao.list(req, res, next)
-});
+router.post('/list',articleDao.list);
+router.get('/list',articleDao.list);
 
 router.post('/publicArticle', util.ensureAuthorized, function(req, res, next) {
     articleDao.publicArticle(req, res, next)
-});
-
-router.post('/getCategoryList', util.ensureAuthorized, function(req, res, next) {
-    articleDao.getCategoryList(req, res, next)
-});
-
-router.post('/createCategory', util.ensureAuthorized, function(req, res, next) {
-    articleDao.createCategory(req, res, next)
-});
-
-router.post('/deleteCategory', util.ensureAuthorized, function(req, res, next) {
-    articleDao.deleteCategory(req, res, next)
-});
-router.post('/updateCategoryName', util.ensureAuthorized, function(req, res, next) {
-    articleDao.updateCategoryName(req, res, next)
-});
-
-router.post('/updateCategoryParentId', util.ensureAuthorized, function(req, res, next) {
-    articleDao.updateCategoryParentId(req, res, next)
-});
-
-router.post('/setCategoryToTop', util.ensureAuthorized, function(req, res, next) {
-    articleDao.setCategoryToTop(req, res, next)
 });
 
 router.post('/deleteArticle', util.ensureAuthorized, function(req, res, next) {
@@ -43,8 +19,7 @@ router.post('/getArticleByCategoryId', util.ensureAuthorized, function(req, res,
     articleDao.getArticleByCategoryId(req, res, next)
 });
 
-router.post('/getArticleDetail', function(req, res, next) {
-    articleDao.getArticleDetail(req, res, next)
-});
+router.get('/getArticleDetail', articleDao.getArticleDetail);
+router.post('/getArticleDetail',   articleDao.getArticleDetail);
 
 module.exports = router;

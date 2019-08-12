@@ -1,19 +1,13 @@
-var express = require('express');
-var router = express.Router();
-var commentDao = require('../../dao/comment/index');
-var util = require('../../util/util.js')
+const express = require('express');
+const router = express.Router();
+const commentDao = require('../../dao/comment/index');
+const util = require('../../lib/util.js')
 /* GET users listing. */
-router.post('/getCommentList', (req, res, next) => {
-    commentDao.getCommentListByArticleId(req, res, next)
-});
+router.get('/getCommentList', commentDao.getCommentListByArticleId);
+router.post('/getCommentList', commentDao.getCommentListByArticleId);
 
-router.post('/addComment', util.ensureAuthorized, (req, res, next) => {
-    commentDao.addComment(req, res, next)
-});
+router.post('/addComment', util.ensureAuthorized, commentDao.addComment);
 
-router.post('/addCommentAnonymous', (req, res, next) => {
-    commentDao.addCommentAnonymous(req, res, next)
-});
-
+router.post('/addCommentAnonymous',  commentDao.addCommentAnonymous);
 
 module.exports = router
