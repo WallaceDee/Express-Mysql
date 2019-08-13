@@ -18,9 +18,9 @@ module.exports = {
   updatePhone: 'UPDATE table_user SET userPhone=? ,updateTime=CURRENT_TIMESTAMP WHERE userName=?',
   updateGender: 'UPDATE table_user SET userGender=? ,updateTime=CURRENT_TIMESTAMP WHERE userName=?',
   updateBirthday: 'UPDATE table_user SET userBirthday=? ,updateTime=CURRENT_TIMESTAMP WHERE userName=?',
-  checkIfExistByWeiboId: 'SELECT userId,userName,userNickName,userAvatar,userBirthday,userPhone,userGender,createTime FROM table_user WHERE weiboId=?',
-  checkIfExistByQQOpenid: 'SELECT userId,userName,userNickName,userAvatar,userBirthday,userPhone,userGender,createTime FROM table_user WHERE qqOpenId=?',
-  signUpWithWeibo: 'INSERT INTO table_user(weiboId,userNickName,userAvatar,userGender,createTime,updateTime) VALUES(?,?,?,?,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP)',
-  signUpWithQQ: 'INSERT INTO table_user(qqOpenId,userNickName,userAvatar,userGender,createTime,updateTime) VALUES(?,?,?,?,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP);SELECT userId,userName,userNickName,userAvatar,userBirthday,userPhone,userGender,createTime FROM table_user WHERE qqOpenId=?',
+  checkIfExistByWeiboId: 'SELECT userId,userName,userNickName,userAvatar,userBirthday,userPhone,userGender,createTime FROM table_user WHERE weiboId={{weiboId}}',
+  checkIfExistByQQOpenid: 'SELECT userId,userName,userNickName,userAvatar,userBirthday,userPhone,userGender,createTime FROM table_user WHERE qqOpenId={{openid}}',
+  signUpWithWeibo: 'INSERT INTO table_user(weiboId,userNickName,userAvatar,userGender,createTime,updateTime) VALUES({{weiboId}},{{userNickName}},{{userAvatar}},{{userGender}},CURRENT_TIMESTAMP,CURRENT_TIMESTAMP);SELECT userId,userName,userNickName,userAvatar,userBirthday,userPhone,userGender,createTime FROM table_user WHERE weiboId={{weiboId}};',
+  signUpWithQQ: 'INSERT INTO table_user(qqOpenId,userNickName,userAvatar,userGender,createTime,updateTime) VALUES({{openId}},{{userNickName}},{{userAvatar}},{{userGender}},CURRENT_TIMESTAMP,CURRENT_TIMESTAMP);SELECT userId,userName,userNickName,userAvatar,userBirthday,userPhone,userGender,createTime FROM table_user WHERE qqOpenId={{openId}};',
   getUserByUserName: 'SELECT userName FROM table_user WHERE table_user.userName={{username}}'
 }

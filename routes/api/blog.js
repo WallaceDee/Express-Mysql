@@ -1,16 +1,14 @@
-var express = require('express');
-var router = express.Router();
-var util = require('../../lib/util.js')
-var blogDao = require('../../dao/blog/index');
+const express = require('express')
+const router = express.Router()
+const util = require('../../lib/util.js')
+const blogDao = require('../../dao/blog/index')
 
-/* GET home page. */
-router.get('/list', blogDao.list);
-router.post('/list', blogDao.list);
+router.get('/list', blogDao.list)
+router.post('/list', blogDao.list)
 
-router.get('/getDetails',  blogDao.getDetails);
-router.post('/getDetails',  blogDao.getDetails);
+router.get('/getDetails',  blogDao.getDetails)
+router.post('/getDetails',  blogDao.getDetails)
 
-router.post('/publicBlog', util.ensureAuthorized, blogDao.publicBlog);
+router.post('/publicBlog', util.ensureAuthorized, blogDao.publicBlog)
 
-
-module.exports = router;
+module.exports = router

@@ -1,11 +1,7 @@
-var express = require('express');
-var router = express.Router();
-var util = require('../../lib/util.js')
-var adDao = require('../../dao/advertisement/index');
+const express = require("express")
+const router = express.Router()
+const adDao = require("../../dao/advertisement/index")
 
-/* GET home page. */
-router.get('/list', (req, res, next) => {
-    adDao.list(req, res, next)
-});
+router.get("/list", adDao.list)
 
-module.exports = router;
+module.exports = router

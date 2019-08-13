@@ -1,24 +1,10 @@
-var express = require('express');
-var router = express.Router();
-var sinaOAuth2 = require('../../lib/sinaOAuth2');
-let $util = require('../../lib/util');
+const express = require('express')
+const router = express.Router()
+const OAuth2 = require('../../lib/OAuth2.js')
+const oauth2 = new OAuth2()
+router.post('/getWeiboAccessToken',oauth2.getAccessTokenWithWeibo)
+router.post('/loginByWeibo',oauth2.loginWithWeibo)
+router.post('/getQQAccessToken',oauth2.getAccessTokenWithQQ)
+router.post('/loginByQQ', oauth2.loginWithQQ)
 
-router.post('/getWeiboAccessToken', function(req, res, next) {
-    var sinaoauth2 = new sinaOAuth2();
-    sinaoauth2.getAccessTokenWithWeibo(req, res);
-});
-router.post('/loginByWeibo', function(req, res, next) {
-    var sinaoauth2 = new sinaOAuth2();
-    sinaoauth2.loginWithWeibo(req, res);
-});
-
-router.post('/getQQAccessToken', function(req, res, next) {
-    var sinaoauth2 = new sinaOAuth2();
-    sinaoauth2.getAccessTokenWithQQ(req, res);
-});
-router.post('/loginByQQ', function(req, res, next) {
-    var sinaoauth2 = new sinaOAuth2();
-    sinaoauth2.loginWithQQ(req, res);
-});
-
-module.exports = router;
+module.exports = router
