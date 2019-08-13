@@ -21,6 +21,6 @@ module.exports = {
   checkIfExistByWeiboId: 'SELECT userId,userName,userNickName,userAvatar,userBirthday,userPhone,userGender,createTime FROM table_user WHERE weiboId={{weiboId}}',
   checkIfExistByQQOpenid: 'SELECT userId,userName,userNickName,userAvatar,userBirthday,userPhone,userGender,createTime FROM table_user WHERE qqOpenId={{openid}}',
   signUpWithWeibo: 'INSERT INTO table_user(weiboId,userNickName,userAvatar,userGender,createTime,updateTime) VALUES({{weiboId}},{{userNickName}},{{userAvatar}},{{userGender}},CURRENT_TIMESTAMP,CURRENT_TIMESTAMP);SELECT userId,userName,userNickName,userAvatar,userBirthday,userPhone,userGender,createTime FROM table_user WHERE weiboId={{weiboId}};',
-  signUpWithQQ: 'INSERT INTO table_user(qqOpenId,userNickName,userAvatar,userGender,createTime,updateTime) VALUES({{openId}},{{userNickName}},{{userAvatar}},{{userGender}},CURRENT_TIMESTAMP,CURRENT_TIMESTAMP);SELECT userId,userName,userNickName,userAvatar,userBirthday,userPhone,userGender,createTime FROM table_user WHERE qqOpenId={{openId}};',
+    signUpWithQQ: 'INSERT INTO table_user(qqOpenId,userNickName,userAvatar,userGender,createTime,updateTime) VALUES({{openid}},{{userNickName}},{{userAvatar}},{{userGender}},CURRENT_TIMESTAMP,CURRENT_TIMESTAMP);SELECT userId,userName,userNickName,userAvatar,userBirthday,userPhone,userGender,createTime FROM table_user WHERE qqOpenId={{openid}};',
   getUserByUserName: 'SELECT userName FROM table_user WHERE table_user.userName={{username}}'
 }
