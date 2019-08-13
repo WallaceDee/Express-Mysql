@@ -109,7 +109,7 @@ const advertisement = require('./routes/api/advertisement')
 app.use('/api/advertisement', advertisement)
 ```
 
-最后访问http://localhost/api/advertisement/list就可以看到接口数据了
+最后访问 http://localhost/api/advertisement/list 就可以看到接口数据了
 
 ## 4.关键方法实现
 
