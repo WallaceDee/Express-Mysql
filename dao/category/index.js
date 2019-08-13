@@ -1,13 +1,13 @@
 const {
     print,
-    executeSql,
+    query,
     generateTreeData
 } = require('../../lib/util')
 const $sql = require('./sqlMapping')
 
 module.exports = {
     list: (req, res) => {
-        executeSql($sql.list).then(result => {
+        query($sql.list).then(result => {
             let data = generateTreeData(result, ['parentId', 'categoryId'], (child) => {
                 child.updateTime = new Date(child.updateTime).getTime()
             }, (val1, val2) => {
@@ -28,7 +28,7 @@ module.exports = {
             categoryName,
             parentId
         } = req.body
-        executeSql($sql.createCategory, [categoryName, parentId]).then(result => {
+        query($sql.createCategory, {categoryName, parentId}).then(result => {
             print.success(res, result)
         }).catch(error => {
             print.error(res, error)
@@ -38,13 +38,13 @@ module.exports = {
         const {
             categoryId
         } = req.body
-        executeSql($sql.getCategoryChildrenByParentId, [categoryId]).then(result => {
+        query($sql.getCategoryChildrenByParentId, {categoryId}).then(result => {
             if (result.length) {
                 print.error(res, {
                     message: '该节点下还有子节点，不能删除'
                 })
             } else {
-                executeSql($sql.deleteCategory, [categoryId]).then(() => {
+                query($sql.deleteCategory, {categoryId}).then(() => {
                     print.success(res, {
                         message: '删除成功'
                     })
@@ -58,7 +58,7 @@ module.exports = {
     },
     updateCategoryName: (req, res) => {
         const {categoryName,categoryId} = req.body
-        executeSql($sql.updateCategoryName, [categoryName,categoryId]).then(result=> {
+        query($sql.updateCategoryName, {categoryName,categoryId}).then(result=> {
             print.success(res, { message: '修改成功'})
         }).catch(error=>{
             print.error(res, error)
@@ -66,7 +66,7 @@ module.exports = {
     },
     updateCategoryParentId: (req, res) => {
         const {parentId,categoryId} = req.body
-        executeSql($sql.updateCategoryParentId, [parentId,categoryId]).then( result=> {
+        query($sql.updateCategoryParentId, {parentId,categoryId}).then( result=> {
             print.success(res,{
                 message: '修改成功'
             })
@@ -76,7 +76,7 @@ module.exports = {
     },
     setCategoryToTop: (req, res) => {
         const {categoryId} = req.body
-        executeSql($sql.updateCategoryUpdateTime, [categoryId]).then(result=> {
+        query($sql.updateCategoryUpdateTime, {categoryId}).then(result=> {
             print.success(res, {
                 message: '置顶成功'
             })

@@ -1,13 +1,12 @@
 const {
     print,
-    executeSql,
-    setPageAndSize
+    query,
+    getSqlPageParmas
 } = require('../../lib/util')
-const $sql = require('./sqlMapping');
+const $sql = require('./sqlMapping')
 
 module.exports = {
     list: (req, res) => {
-        //query: 'SELECT * FROM table_user WHERE userName LIKE "%?%" OR userPhone LIKE "%?%"',
         const {
             page,
             rows,
@@ -16,11 +15,15 @@ module.exports = {
             page: 1,
             rows: 10
         }, Object.assign(req.body, req.query))
-        let params = [categoryId, ...setPageAndSize(page, rows)]
-        executeSql($sql.list, params).then(result => {
+        let params = {
+            categoryId,
+            ...getSqlPageParmas(page, rows)
+        }
+
+        query($sql.list, params).then(result => {
             res.json({
-                rows: result[1],
-                total: result[2][0]['COUNT(*)']
+                rows: result[0], //sql语句1查询结果
+                ...result[1][0] //sql语句2查询结果[{total:?}]
             })
         }).catch(error => {
             print.error(res, error)
@@ -30,7 +33,9 @@ module.exports = {
         const {
             blogId
         } = Object.assign(req.body, req.query)
-        executeSql($sql.getDetailsById, [blogId]).then(result => {
+        query($sql.getDetailsById, {
+            blogId
+        }).then(result => {
             if (result && result.length) {
                 print.success(res, result[0])
             } else {
@@ -43,7 +48,6 @@ module.exports = {
         })
     },
     publicBlog: (req, res) => {
-        // create: 'INSERT INTO table_blog(type,title,content,cover,url,categoryId,authorUserId,createTime,updateTime) VALUES(?,?,?,?,?,?,?,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP)',
         const {
             blogId,
             type,
@@ -52,10 +56,20 @@ module.exports = {
             cover,
             categoryId
         } = req.body
-        let params = [type, title, content, cover, categoryId, req.userInfo.userId]
-        if (blogId !== undefined) {
-            params.push(blogId)
-            executeSql($sql.update, params).then(result => {
+        const {
+            userId
+        } = req.userInfo
+        let params = {
+            type,
+            title,
+            content,
+            cover,
+            categoryId,
+            userId
+        }
+        if (blogId) {
+            params.blogId = blogId
+            query($sql.update, params).then(result => {
                 print.success(res, {
                     message: '修改成功'
                 })
@@ -63,7 +77,7 @@ module.exports = {
                 print.error(res, error)
             })
         } else {
-            executeSql($sql.create, params).then(result => {
+            query($sql.create, params).then(result => {
                 print.success(res, {
                     message: '发布成功'
                 })

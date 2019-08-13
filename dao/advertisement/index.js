@@ -1,12 +1,12 @@
 const {
     print,
-    executeSql
+    query
 } = require('../../lib/util')
 const $sql = require('./sqlMapping')
 
 module.exports = {
     list: (req, res) => {
-        executeSql($sql.list).then(result => {
+        query($sql.list).then(result => {
             print.success(res, result)
         }).catch(error => {
             print.error(res, result)

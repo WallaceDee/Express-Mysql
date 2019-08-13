@@ -1,4 +1,3 @@
-var sqlMapping = {
-    list: 'SELECT * FROM table_advertisement',
+module.exports = {
+  list: 'SELECT * FROM table_advertisement'
 }
-module.exports = sqlMapping;
